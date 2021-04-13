@@ -4,17 +4,17 @@
 <div class="col-md-12">
     <div class="card card-primary">
 
-        <div class="col-sm-12">
+    <div class="col-sm-12">
 
-            @if(session()->get('success'))
-            <div class="alert alert-success">
-                {{ session()->get('success') }}
-            </div>
-            @endif
-        </div>
+@if(session()->get('success'))
+<div class="alert alert-success">
+    {{ session()->get('success') }}
+</div>
+@endif
+</div>
 
         <div class="card-header">
-            <h3 class="card-title">Add Category</h3>
+            <h3 class="card-title">Update Category</h3>
         </div>
 
         @if ($errors->any())
@@ -26,12 +26,13 @@
             </ul>
         </div><br />
         @endif
-        <form id="quickForm" action="{{ route('admin.category.store') }}" novalidate="novalidate" method="POST">
+        <form id="quickForm" action="{{ route('admin.category.update', $category->id) }}" novalidate="novalidate" method="POST">
             @csrf
+            @method('PUT')
             <div class="card-body">
                 <div class="form-group">
                     <label for="category_name_id">Category Name</label>
-                    <input type="textbox" name="category_name" class="form-control" id="category_name_id" placeholder="Enter category name">
+                    <input type="textbox" name="category_name"  value="{{ $category->category_name }}"  class="form-control" id="category_name_id" placeholder="Enter category name">
                 </div>
             </div>
             <!-- /.card-body -->

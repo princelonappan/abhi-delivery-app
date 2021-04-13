@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -20,9 +22,15 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.dashboard');
+        if ($request->wantsJson) {
+            $categories = Category::all();
+            return $categories;
+        } else {
+            $categories = Category::paginate(10);
+            return view('admin.category.list-category')->with('categories', $categories);
+        }
     }
 
     /**
@@ -45,7 +53,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category_name'=>'required'
+            'category_name' => 'required'
         ]);
 
         $category = new Category([
@@ -75,7 +83,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::find($id);
+        return view('admin.category.edit-category', compact('category'));   
     }
 
     /**
@@ -87,7 +96,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'category_name' => 'required'
+        ]);
+
+        $category = Category::find($id);
+        $category->category_name =  $request->get('category_name');
+        $category->save();
+        return redirect('/admin/category')->with('success', 'Category Updated!');
     }
 
     /**
@@ -99,5 +115,9 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
+        $category = Category::find($id);
+        $category->delete();
+
+        return redirect('/admin/category')->with('success', 'Category deleted!');
     }
 }

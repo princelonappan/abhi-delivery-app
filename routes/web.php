@@ -19,6 +19,10 @@ Route::prefix('admin')->group(function() {
     Route::get('logout/', 'Auth\AdminLoginController@logout')->name('admin.logout');
     Route::get('/', 'Auth\AdminController@index')->name('admin.dashboard');
     Route::resource('category', 'Admin\CategoryController', ['names' => 'admin.category']);
+    Route::resource('distributor', 'Admin\DistributorController', ['names' => 'admin.distributor']);
+    Route::resource('distributor.branch', 'Admin\BranchController');
+
+    // Route::resource('branch', 'Admin\DistributorController', ['names' => 'admin.distributor']);
    }) ;
 
 Route::get('/', function () {
