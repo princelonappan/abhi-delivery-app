@@ -21,6 +21,8 @@ Route::prefix('admin')->group(function() {
     Route::resource('category', 'Admin\CategoryController', ['names' => 'admin.category']);
     Route::resource('distributor', 'Admin\DistributorController', ['names' => 'admin.distributor']);
     Route::resource('distributor.branch', 'Admin\BranchController');
+    Route::resource('products', 'Admin\ProductController', ['names' => 'admin.products']);
+    Route::resource('products.image', 'Admin\ProductImageController', ['names' => 'admin.products.image']);
 
     // Route::resource('branch', 'Admin\DistributorController', ['names' => 'admin.distributor']);
    }) ;

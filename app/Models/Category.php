@@ -10,7 +10,7 @@ class Category extends Model
 
     public $timestamps = true;
 
-    protected $table = 'category';
+    protected $table = 'categories';
     /**
      * The attributes that are mass assignable.
      *
