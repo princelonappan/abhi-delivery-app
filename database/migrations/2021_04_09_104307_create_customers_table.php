@@ -17,7 +17,9 @@ class CreateCustomersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone_number', 255);
-            $table->string('status', 100);
+            $table->string('status', 100)->default('Active');
+            $table->integer('otp')->nullable();
+            $table->date('date_of_birth');
             $table->timestamps();
         });
     }

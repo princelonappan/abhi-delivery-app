@@ -3,62 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
-use Illuminate\Http\Request;
+use App\Http\Requests\CustomerRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    
+
+    public function register(CustomerRequest $request)
     {
-        //
+        return Customer::create($request->all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function login(CustomerRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Customer $customer)
-    {
-        //
+        $customer = Customer::where('phone_number',$request->phone_number)->first();
+        $email = !empty($customer->user)?$customer->user->email:NULL;
+        $creds = ['email' => $email, 'password' => $request->password];
+        if(!Auth::attempt($creds)) {
+             abort(401, 'The user is not authorized');
+        }
+        if($customer->otp) {
+            abort(401);
+        } 
+        $authService = app('App\Services\AuthProxy');
+        $tokenDetails = $authService->getAccessToken($creds);
+        $tokenDetails['customer'] = $customer->load('user');
+        return $tokenDetails;
     }
 }
