@@ -1,7 +1,7 @@
 @extends('admin.admin-template')
 
 @section('content_header')
-<h1>Manage Distributor</h1>
+<h1>Manage Branch</h1>
 @stop
 
 @section('content')
@@ -16,10 +16,10 @@
     <div class="card">
         <div class="card-header">
             <div>
-                <a style="margin: 19px;" href="{{ route('admin.distributor.create')}}" class="btn btn-primary">New Distributor</a>
+                <a style="margin: 19px;" href="{{ route('admin.distributor.branch.create', $distributor_id)}}" class="btn btn-primary">New Branch</a>
             </div>
             <div class="card-tools">
-                {{ $distributor->links() }}
+                {{ $branch->links() }}
             </div>
         </div>
         <!-- /.card-header -->
@@ -40,7 +40,7 @@
                     @php
                     $i = 1
                     @endphp
-                    @foreach ($distributor as $_distributor)
+                    @foreach ($branch as $_distributor)
                     <tr>
                         <td>{{ $i }}</td>
                         <td>{{ $_distributor->name }}</td>
@@ -61,7 +61,7 @@
                             </form>
                         </td>
                         <td>
-                            <a href="{{ route('admin.distributor.branch.index',$_distributor->id)}}" class="btn btn-danger" style="background-color:green; border-color:green;" >Manage Branches </a>
+                            <a href="" class="btn btn-danger" style="background-color:green; border-color:green;" >Manage Branches </a>
                         </td>
                     </tr>
                     @php

@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Distributor;
+use App\Distributor;
+use App\User;
+use Illuminate\Support\Facades\Hash;
+
 
 class DistributorController extends Controller
 {
@@ -40,7 +43,6 @@ class DistributorController extends Controller
      */
     public function create()
     {
-        //
         return view('admin.distributor.add-distributor');
     }
 
@@ -56,17 +58,28 @@ class DistributorController extends Controller
             'distributor_name' => 'required',
             'email' => 'required',
             'password' => 'required',
-            'phone_number' => 'required|unique:distributor'
+            'phone_number' => 'required|unique:distributors'
         ]);
 
         $distributor = new Distributor([
             'name' => $request->get('distributor_name'),
-            'email' => $request->get('email'),
-            'password' => $request->get('password'),
             'phone_number' => $request->get('phone_number'),
             'status' => 1
         ]);
+
         $distributor->save();
+        $distributor_id = $distributor->id;
+        $hashed_password = Hash::make($request->get('password'));
+
+        $user = new User([
+            'userable_type' => 'distributor',
+            'userable_id' => $distributor_id,
+            'name' => $request->get('distributor_name'),
+            'email' => $request->get('email'),
+            'password' => $hashed_password
+        ]);
+
+        $user->save();
         return redirect('/admin/distributor')->with('success', 'Distributor saved!');
     }
 
@@ -105,16 +118,20 @@ class DistributorController extends Controller
         $request->validate([
             'distributor_name' => 'required',
             'email' => 'required',
-            'password' => 'required',
-            'phone_number' => "required|unique:distributor,phone_number,$id,id",
+            'phone_number' => "required|unique:distributors,phone_number,$id,id",
         ]);
 
         $distributor = Distributor::find($id);
         $distributor->name =  $request->get('distributor_name');
-        $distributor->email =  $request->get('email');
-        $distributor->password =  $request->get('password');
         $distributor->phone_number =  $request->get('phone_number');
         $distributor->save();
+
+        $updateFields = array("name"=> $request->get('distributor_name'), "email" => $request->get('email'));
+        $password = $request->get('password');
+        if(isset($password) && !empty($password)) {
+            $updateFields = array_merge($updateFields, array('password' => Hash::make($password)));
+        }
+        User::where(['userable_type'=> 'distributor','userable_id'=> $id])->update($updateFields);
         return redirect('/admin/distributor')->with('success', 'Category Updated!');
     }
 
@@ -126,10 +143,12 @@ class DistributorController extends Controller
      */
     public function destroy($id)
     {
-        //
         $distributor = Distributor::find($id);
         $distributor->delete();
 
-        return redirect('/admin/distributor')->with('success', 'Category deleted!');
+        $whereArray = array('userable_type' => 'distributor','userable_id' => $id);
+        User::where($whereArray)->delete();
+
+        return redirect('/admin/distributor')->with('success', 'Distributor deleted!');
     }
 }

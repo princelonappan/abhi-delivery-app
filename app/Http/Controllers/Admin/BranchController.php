@@ -4,7 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Distributor;
+use App\Distributor;
+use App\User;
+use App\Branch;
+use App\Address;
+use Illuminate\Support\Facades\Hash;
+
 
 class BranchController extends Controller
 {
@@ -25,11 +30,11 @@ class BranchController extends Controller
     public function index($distributor_id, Request $request)
     {
         if ($request->wantsJson) {
-            $distributor = Distributor::all();
-            return $distributor;
+            $branch = Distributor::all();
+            return $branch;
         } else {
-            $distributor = Distributor::paginate(10);
-            return view('admin.distributor.list-distributor')->with('distributor', $distributor);
+            $branch = Branch::paginate(10);
+            return view('admin.branch.list-branch', compact('branch', 'distributor_id'));
         }
     }
 
@@ -38,10 +43,9 @@ class BranchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($distributor_id)
     {
-        //
-        return view('admin.distributor.add-distributor');
+        return view('admin.branch.add-branch', compact('distributor_id'));
     }
 
     /**
@@ -50,24 +54,55 @@ class BranchController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($distributor_id, Request $request)
     {
         $request->validate([
-            'distributor_name' => 'required',
+            'branch_name' => 'required',
             'email' => 'required',
             'password' => 'required',
-            'phone_number' => 'required|unique:distributor'
+            'address1' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'zip' => 'required',
+            'country' => 'required',
+            'phone_number' => 'required|unique:branches'
         ]);
 
-        $distributor = new Distributor([
-            'name' => $request->get('distributor_name'),
-            'email' => $request->get('email'),
-            'password' => $request->get('password'),
+        $branch = new Branch([
+            'branch_name' => $request->get('branch_name'),
             'phone_number' => $request->get('phone_number'),
-            'status' => 1
+            'status' => 1,
+            'distributor_id' => $distributor_id
         ]);
-        $distributor->save();
-        return redirect('/admin/distributor')->with('success', 'Distributor saved!');
+
+        $branch->save();
+        $branch_id = $branch->id;
+        $hashed_password = Hash::make($request->get('password'));
+
+        $user = new User([
+            'userable_type' => 'branch',
+            'userable_id' => $branch_id,
+            'name' => $request->get('branch_name'),
+            'email' => $request->get('email'),
+            'password' => $hashed_password
+        ]);
+        $user->save();
+
+        $address = new Address([
+            'addressable_type' => 'branch',
+            'addressable_id' => $branch_id,
+            'address_type' => 'default',
+            'address' => $request->get('address1'),
+            'address2' => $request->get('address2'),
+            'city' => $request->get('city'),
+            'state' => $request->get('state'),
+            'country' => $request->get('country'),
+            'zip' => $request->get('zip'),
+        ]);
+
+        $address->save();
+
+        return redirect('/admin/distributor/'.$distributor_id.'/branch')->with('success', 'Branch saved!');
     }
 
     /**
@@ -105,16 +140,20 @@ class BranchController extends Controller
         $request->validate([
             'distributor_name' => 'required',
             'email' => 'required',
-            'password' => 'required',
-            'phone_number' => "required|unique:distributor,phone_number,$id,id",
+            'phone_number' => "required|unique:distributors,phone_number,$id,id",
         ]);
 
         $distributor = Distributor::find($id);
         $distributor->name =  $request->get('distributor_name');
-        $distributor->email =  $request->get('email');
-        $distributor->password =  $request->get('password');
         $distributor->phone_number =  $request->get('phone_number');
         $distributor->save();
+
+        $updateFields = array("name"=> $request->get('distributor_name'), "email" => $request->get('email'));
+        $password = $request->get('password');
+        if(isset($password) && !empty($password)) {
+            $updateFields = array_merge($updateFields, array('password' => Hash::make($password)));
+        }
+        User::where(['userable_type'=> 'distributor','userable_id'=> $id])->update($updateFields);
         return redirect('/admin/distributor')->with('success', 'Category Updated!');
     }
 
@@ -126,10 +165,12 @@ class BranchController extends Controller
      */
     public function destroy($id)
     {
-        //
         $distributor = Distributor::find($id);
         $distributor->delete();
 
-        return redirect('/admin/distributor')->with('success', 'Category deleted!');
+        $whereArray = array('userable_type' => 'distributor','userable_id' => $id);
+        User::where($whereArray)->delete();
+
+        return redirect('/admin/distributor')->with('success', 'Distributor deleted!');
     }
 }
