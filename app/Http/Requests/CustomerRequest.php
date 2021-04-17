@@ -52,6 +52,13 @@ class CustomerRequest extends FormRequest
                 ];
                 
             }
+            if($this->endpoint == 'api/v1/customer/login') {
+                $rules = [
+                    'phone_number' => 'required|exists:customers,phone_number|digits:10',
+                    'password' => 'required'
+                ];
+                
+            }
         }
 
         return $rules;
@@ -69,6 +76,7 @@ class CustomerRequest extends FormRequest
             'phone_number.required'  => 'The customer phone number is required',
             'phone_number.unique'  => 'The customer phone number must be unique',
             'phone_number.digits' => 'The customer phone number doesnt have 10 digits',
+            'phone_number.exists'  => 'The customer phone number doesnt exist',
             'password.required' => 'A password is required',
             'password.confirmed' => 'Password and confirm password doesnt match',
             'password.regex' => 'Password must be atleast 8 chars in length with atleat one upper case letter,
