@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cart;
-use Illuminate\Http\Request;
+use App\Http\Requests\CartRequest;
 
 class CartController extends Controller
 {
@@ -14,18 +14,23 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+        $carts =  Cart::where('customer_id', request('customer_id'))->get();
+        return $carts->load('customer', 'items', 'items.product',  'items.product.category');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(CartRequest $request)
     {
-        //
+        $cart = Cart::where(['customer_id' => request('customer_id'), 'status' => 'Active'])->first();
+        if(empty($cart)) {
+            $cart = Cart::create([
+                'customer_id' => request('customer_id'),
+                'status' => 'Active'
+            ]);
+        }
+        if($request->has('product_id')) {
+            $cart->addCustomerItem(request('product_id'), request('qty'), request('price'));
+        }
+        return $cart->load('customer', 'items', 'items.product', 'items.product.category');
     }
 
     /**
@@ -34,21 +39,22 @@ class CartController extends Controller
      * @param  \App\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function show(Cart $cart)
+    public function show($id)
     {
-        //
+        return Cart::findOrFail($id)->load('customer', 'items', 'items.product', 'items.product.category');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Cart $cart)
+    public function update(CartRequest $request, $id)
     {
-        //
+        $cart = Cart::findOrFail($id);
+        if(request('operation') == 'Add') {
+            $cart->addCustomerItem(request('product_id'), request('qty'), request('price'));   
+        } elseif (request('operation') == 'Update') {
+            $cart->updateCustomerItem(request('product_id'), request('qty'), request('price'));   
+        } elseif (request('operation') == 'Delete') {
+            $cart->removeCustomerItem(request('product_id'), request('qty'), request('price'));
+        }
+        return $cart->load('customer', 'items', 'items.product', 'items.product.category');
     }
 
     /**

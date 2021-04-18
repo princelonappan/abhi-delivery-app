@@ -21,8 +21,13 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
 	 */
 	Route::post('customer/register', 'CustomerController@register');
 	Route::post('customer/login', 'CustomerController@login');
+	Route::get('customer', 'CustomerController@index');
 	Route::get('category', 'CategoryController@index');
 	Route::get('product', 'ProductController@index');
+	Route::get('cart', 'CartController@index');
+	Route::get('cart/{id}', 'CartController@show');
+	Route::post('cart', 'CartController@store');
+	Route::put('cart/{id}', 'CartController@update');
 	// Route::post('customer/verify', 'CustomerController@verify');
 	// Route::post('customer/validate', 'CustomerController@valid');	
 });

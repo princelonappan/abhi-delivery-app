@@ -31,4 +31,9 @@ class CustomerController extends Controller
         $tokenDetails['customer'] = $customer->load('user');
         return $tokenDetails;
     }
+
+    public function index()
+    {
+        return Customer::all();
+    }
 }
