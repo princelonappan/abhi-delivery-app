@@ -15,4 +15,9 @@ class Branch extends Model
     {
     	return $this->morphOne('App\User', 'userable');		
     }
+
+    public function address() 
+    {
+        return $this->morphOne('App\Address', 'addressable');		
+    }
 }

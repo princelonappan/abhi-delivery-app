@@ -2,9 +2,12 @@
 
 @section('content')
 <div class="col-md-12">
+
     <div class="card card-primary">
 
         <div class="col-sm-12">
+            @include('admin.breadcumb')
+
             @if(session()->get('success'))
             <div class="alert alert-success">
                 {{ session()->get('success') }}
@@ -50,10 +53,10 @@
             <div class="imageColumn">
                 <img src="{{$image->image_url}}" alt="Product Image" style="width:100%">
                 <form action="{{ route('admin.products.image.destroy', ['product'=>$product_id,'image'=>$image->id])}}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger" type="submit" style="margin:10px;">Delete</button>
-                            </form>
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger" type="submit" style="margin:10px;">Delete</button>
+                </form>
             </div>
             @endforeach
         </div>

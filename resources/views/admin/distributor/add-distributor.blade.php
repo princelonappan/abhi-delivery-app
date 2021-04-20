@@ -5,6 +5,8 @@
     <div class="card card-primary">
 
         <div class="col-sm-12">
+            @include('admin.breadcumb')
+
             @if(session()->get('success'))
             <div class="alert alert-success">
                 {{ session()->get('success') }}
@@ -31,7 +33,7 @@
                 <div class="form-group row">
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="distributor-name" name="distributor_name"  placeholder="Name">
+                        <input type="text" class="form-control" id="distributor-name" name="distributor_name" placeholder="Name">
                     </div>
                 </div>
                 <div class="form-group row">

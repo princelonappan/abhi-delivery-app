@@ -9,6 +9,7 @@ use App\User;
 use App\Branch;
 use App\Address;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 
 class BranchController extends Controller
@@ -29,12 +30,13 @@ class BranchController extends Controller
      */
     public function index($distributor_id, Request $request)
     {
+        $distributor = Distributor::find($distributor_id);
         if ($request->wantsJson) {
             $branch = Distributor::all();
             return $branch;
         } else {
             $branch = Branch::paginate(10);
-            return view('admin.branch.list-branch', compact('branch', 'distributor_id'));
+            return view('admin.branch.list-branch', compact('branch', 'distributor_id', 'distributor'));
         }
     }
 
@@ -63,10 +65,13 @@ class BranchController extends Controller
             'address1' => 'required',
             'city' => 'required',
             'state' => 'required',
-            'zip' => 'required',
+            'zip' => ['required', Rule::unique('addresses')->where(function ($query) {
+                return $query->where('addressable_type', 'branch');
+            }), ],
             'country' => 'required',
             'phone_number' => 'required|unique:branches'
         ]);
+
 
         $branch = new Branch([
             'branch_name' => $request->get('branch_name'),
@@ -93,7 +98,7 @@ class BranchController extends Controller
             'addressable_id' => $branch_id,
             'address_type' => 'default',
             'address' => $request->get('address1'),
-            'address2' => $request->get('address2'),
+            'address2' => (!empty($request->get('address2')) ? $request->get('address2') : ''),
             'city' => $request->get('city'),
             'state' => $request->get('state'),
             'country' => $request->get('country'),
@@ -122,10 +127,10 @@ class BranchController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($distributor_id, $id)
     {
-        $distributor = Distributor::find($id);
-        return view('admin.distributor.edit-distributor', compact('distributor'));   
+        $branch = Branch::find($id);
+        return view('admin.branch.edit-branch', compact('branch'));   
     }
 
     /**
@@ -135,26 +140,49 @@ class BranchController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($distributor_id, $id, Request $request)
     {
         $request->validate([
-            'distributor_name' => 'required',
+            'branch_name' => 'required',
             'email' => 'required',
-            'phone_number' => "required|unique:distributors,phone_number,$id,id",
+            'address1' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'zip' => ['required', Rule::unique('addresses')->ignore($id, 'addressable_id')->where(function ($query) {
+                return $query->where('addressable_type', 'branch');
+            }), ],
+            'country' => 'required',
+            'phone_number' => "required|unique:branches,phone_number,$id,id",
         ]);
 
-        $distributor = Distributor::find($id);
-        $distributor->name =  $request->get('distributor_name');
-        $distributor->phone_number =  $request->get('phone_number');
-        $distributor->save();
-
-        $updateFields = array("name"=> $request->get('distributor_name'), "email" => $request->get('email'));
+        //Updating the Branch table
+        $branch = Branch::find($id);
+        $branch->branch_name = $request->get('branch_name');
+        $branch->phone_number = $request->get('phone_number');
+        $branch->status = 1;
+        $branch->save();
+        
+        //Updating the User table
+        $updateFields = array("name"=> $request->get('branch_name'), "email" => $request->get('email'));
         $password = $request->get('password');
+
         if(isset($password) && !empty($password)) {
             $updateFields = array_merge($updateFields, array('password' => Hash::make($password)));
         }
-        User::where(['userable_type'=> 'distributor','userable_id'=> $id])->update($updateFields);
-        return redirect('/admin/distributor')->with('success', 'Category Updated!');
+        User::where(['userable_type'=> 'branch','userable_id'=> $id])->update($updateFields);
+
+        //Updating the Address table
+        $addressUpdate = array(
+            'address' => $request->get('address1'),
+            'address2' => (!empty($request->get('address2')) ? $request->get('address2') : ''),
+            'city' => $request->get('city'),
+            'state' => $request->get('state'),
+            'country' => $request->get('country'),
+            'zip' => $request->get('zip'),
+        );
+        Address::where(['addressable_type'=> 'branch','addressable_id'=> $id])->update($addressUpdate);
+
+        return redirect('/admin/distributor/'.$distributor_id.'/branch')->with('success', 'Branch Updated!');
     }
 
     /**
@@ -163,14 +191,18 @@ class BranchController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($distributor_id, $id)
     {
-        $distributor = Distributor::find($id);
-        $distributor->delete();
+        $branch = Branch::find($id);
+        $branch->delete();
 
-        $whereArray = array('userable_type' => 'distributor','userable_id' => $id);
+        $whereArray = array('userable_type' => 'branch','userable_id' => $id);
         User::where($whereArray)->delete();
 
-        return redirect('/admin/distributor')->with('success', 'Distributor deleted!');
+
+        $whereAddressArray = array('addressable_type' => 'branch','addressable_id' => $id);
+        Address::where($whereAddressArray)->delete();
+
+        return redirect('/admin/distributor/'.$distributor_id.'/branch')->with('success', 'Branch deleted!');
     }
 }

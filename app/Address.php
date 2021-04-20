@@ -8,7 +8,7 @@ class Address extends Model
 {
     protected $fillable = [
         'addressable_type', 'addressable_id', 'address_type', 'address', 'address2', 'city',
-        'state', 'zip'
+        'state', 'zip', 'country'
     ];
 
     public function addressable()

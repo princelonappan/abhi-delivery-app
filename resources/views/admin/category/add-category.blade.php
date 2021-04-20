@@ -5,6 +5,7 @@
     <div class="card card-primary">
 
         <div class="col-sm-12">
+            @include('admin.breadcumb')
 
             @if(session()->get('success'))
             <div class="alert alert-success">

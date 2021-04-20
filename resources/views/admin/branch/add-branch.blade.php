@@ -5,6 +5,9 @@
     <div class="card card-primary">
 
         <div class="col-sm-12">
+
+            @include('admin.breadcumb')
+
             @if(session()->get('success'))
             <div class="alert alert-success">
                 {{ session()->get('success') }}
@@ -31,13 +34,13 @@
                 <div class="form-group row">
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Branch Name</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="branch-name" name="branch_name"  placeholder="Name">
+                        <input type="text" class="form-control" value="{{old('branch_name')}}" id="branch-name" name="branch_name" placeholder="Name">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Email</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                        <input type="email" class="form-control" id="email" value="{{old('email')}}" name="email" placeholder="Email">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -49,49 +52,49 @@
                 <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Phone number</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Phone number">
+                        <input type="text" class="form-control" id="phone_number" value="{{old('phone_number')}}" name="phone_number" placeholder="Phone number">
                     </div>
                 </div>
                 <div style="color:gray; margin: 10px;font-weight: bold;">Branch Address</div>
                 <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Address 1</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="address1" name="address1" placeholder="Address 1">
+                        <input type="text" class="form-control" id="address1" value="{{old('address1')}}" name="address1" placeholder="Address 1">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Address 2</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="address2" name="address2" placeholder="Address 2">
+                        <input type="text" class="form-control" id="address2" value="{{old('address2')}}" name="address2" placeholder="Address 2">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">City</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="city" name="city" placeholder="City">
+                        <input type="text" class="form-control" id="city" value="{{old('city')}}" name="city" placeholder="City">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">State</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="state" name="state" placeholder="State">
+                        <input type="text" class="form-control" id="state" value="{{old('state')}}" name="state" placeholder="State">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Zip</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="zip" name="zip" placeholder="Zip">
+                        <input type="text" class="form-control" id="zip" name="zip" value="{{old('zip')}}" placeholder="Zip">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Country</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="country" name="country" placeholder="Country">
+                        <input type="text" class="form-control" id="country" name="country" value="{{old('country')}}" placeholder="Country">
                     </div>
                 </div>
             </div>

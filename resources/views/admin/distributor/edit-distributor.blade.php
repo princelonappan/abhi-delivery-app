@@ -5,6 +5,8 @@
     <div class="card card-primary">
 
         <div class="col-sm-12">
+            @include('admin.breadcumb')
+
             @if(session()->get('success'))
             <div class="alert alert-success">
                 {{ session()->get('success') }}
@@ -25,26 +27,26 @@
             </ul>
         </div><br />
         @endif
-        <form id="quickForm" action="{{ route('admin.distributor.update', $distributor->id) }}"  novalidate="novalidate" method="POST">
+        <form id="quickForm" action="{{ route('admin.distributor.update', $distributor->id) }}" novalidate="novalidate" method="POST">
             @csrf
             @method('PUT')
             <div class="card-body">
                 <div class="form-group row">
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="distributor-name" value="{{ $distributor->name }}" name="distributor_name"  placeholder="Name">
+                        <input type="text" class="form-control" id="distributor-name" value="{{ $distributor->name }}" name="distributor_name" placeholder="Name">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Email</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="email" name="email" value="{{ $distributor->user->email }}"  placeholder="Email">
+                        <input type="email" class="form-control" id="email" name="email" value="{{ $distributor->user->email }}" placeholder="Email">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="password" name="password"   placeholder="Password">
+                        <input type="text" class="form-control" id="password" name="password" placeholder="Password">
                     </div>
                 </div>
                 <div class="form-group row">

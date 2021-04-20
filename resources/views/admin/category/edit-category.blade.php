@@ -4,14 +4,15 @@
 <div class="col-md-12">
     <div class="card card-primary">
 
-    <div class="col-sm-12">
+        <div class="col-sm-12">
+            @include('admin.breadcumb')
 
-@if(session()->get('success'))
-<div class="alert alert-success">
-    {{ session()->get('success') }}
-</div>
-@endif
-</div>
+            @if(session()->get('success'))
+            <div class="alert alert-success">
+                {{ session()->get('success') }}
+            </div>
+            @endif
+        </div>
 
         <div class="card-header">
             <h3 class="card-title">Update Category</h3>
@@ -32,7 +33,7 @@
             <div class="card-body">
                 <div class="form-group">
                     <label for="category_name_id">Category Name</label>
-                    <input type="textbox" name="category_name"  value="{{ $category->category_name }}"  class="form-control" id="category_name_id" placeholder="Enter category name">
+                    <input type="textbox" name="category_name" value="{{ $category->category_name }}" class="form-control" id="category_name_id" placeholder="Enter category name">
                 </div>
             </div>
             <!-- /.card-body -->
