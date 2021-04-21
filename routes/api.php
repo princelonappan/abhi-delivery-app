@@ -16,9 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], function() {
 
-	/**
-	 * Customer APIs
-	 */
 	Route::post('customer/register', 'CustomerController@register');
 	Route::post('customer/login', 'CustomerController@login');
 	Route::get('customer', 'CustomerController@index');
@@ -28,6 +25,8 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
 	Route::get('cart/{id}', 'CartController@show');
 	Route::post('cart', 'CartController@store');
 	Route::put('cart/{id}', 'CartController@update');
-	// Route::post('customer/verify', 'CustomerController@verify');
-	// Route::post('customer/validate', 'CustomerController@valid');	
+	Route::get('address/{id}', 'AddressController@show');
+	Route::get('address', 'AddressController@index');
+	Route::post('address', 'AddressController@store');
+	Route::put('address/{id}', 'AddressController@update');
 });
