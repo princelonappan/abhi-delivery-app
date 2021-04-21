@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         Relation::morphMap([
             'customer' => 'App\Customer',
             'distributor' => 'App\Distributor',
-            'branch' => 'App\Branch'
+            'branch' => 'App\Branch',
         ]);
         Passport::tokensExpireIn(Carbon::now()->addDays(5));
         Passport::refreshTokensExpireIn(Carbon::now()->addDays(10));
