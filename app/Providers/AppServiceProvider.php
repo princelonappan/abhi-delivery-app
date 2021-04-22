@@ -35,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
             'customer' => 'App\Customer',
             'distributor' => 'App\Distributor',
             'branch' => 'App\Branch',
+            'order' => 'App\Order'
         ]);
         Passport::tokensExpireIn(Carbon::now()->addDays(5));
         Passport::refreshTokensExpireIn(Carbon::now()->addDays(10));

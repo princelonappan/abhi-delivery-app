@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Order;
-use Illuminate\Http\Request;
+use App\Cart;
+use App\Address;
+use App\Http\Requests\OrderRequest;
 
 class OrderController extends Controller
 {
@@ -14,7 +16,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::where('customer_id', request('customer_id'))->get();
+        return $orders->load('items');
     }
 
     /**
@@ -23,9 +26,19 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OrderRequest $request)
     {
-        //
+        //print_r($request->only((new Address)->attributes));exit;
+        $cart = Cart::find(request('cart_id'))->load('items');
+        $order = Order::create([
+            'customer_id' => $cart->customer_id,
+            'order_total' => request('order_total') 
+        ]);
+        $order->createOrderItems($cart);
+        $order->address()->create($request->except(['cart_id', 'order_total']));
+        $cart->update(['status' => 'Checked Out']);
+
+        return $order->load('items');
     }
 
     /**
@@ -34,31 +47,8 @@ class OrderController extends Controller
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Order $order)
-    {
-        //
+        return Order::findOrFail($id)->load('items');
     }
 }
