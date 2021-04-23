@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use GuzzleHttp\Client as Http;
+use App\Customer;
+use App\User;
 class AuthProxy
 {
 	public $http;
@@ -47,5 +49,22 @@ class AuthProxy
 	public function getPasswordClient()
 	{
     	return \DB::table('oauth_clients')->where('id', env('PASSWORD_GRANT_CLIENT'))->first();
+	}
+
+	public function identityUser()
+	{
+		switch (request('type')) {
+			case 'facebook':
+				$user = User::where('facebook_id', request('facebook_id'))->firstOrFail();
+				break;
+			case 'google':
+				$user = User::where('google_id', request('google_id'))->firstOrFail();
+				break;
+			default:
+				$customer = Customer::where('phone_number',request('phone_number'))->firstOrFail();
+				$user = $customer->user;
+				break;
+		}
+		return $user;
 	}
 }

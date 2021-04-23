@@ -20,7 +20,9 @@ class CustomerObserver
             'userable_id' => $customer->id,
             'name' => $customer->name,
             'email' => request('email'),
-            'password' => bcrypt(request('password'))
+            'password' => bcrypt(request('password')),
+            'facebook_id' => request('facebook_id'),
+            'google_id' => request('google_id')
         ]);
     }
 

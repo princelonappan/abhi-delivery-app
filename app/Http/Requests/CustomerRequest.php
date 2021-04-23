@@ -54,8 +54,11 @@ class CustomerRequest extends FormRequest
             }
             if($this->endpoint == 'api/v1/customer/login') {
                 $rules = [
-                    'phone_number' => 'required|exists:customers,phone_number|digits:10',
-                    'password' => 'required'
+                    'type' => 'required|in:phone,facebook,google',
+                    'phone_number' => 'required_if:type,phone|exists:customers,phone_number|digits:10',
+                    'password' => 'required_if:type,phone',
+                    'facebook_id' => 'required_if:type,facebook',
+                    'google_id' => 'required_if:type,google'
                 ];
                 
             }
@@ -73,14 +76,15 @@ class CustomerRequest extends FormRequest
     {
         return [
             'name.required' => 'The customer name is required',
-            'phone_number.required'  => 'The customer phone number is required',
+            'phone_number.required_if'  => 'The customer phone number is required',
             'phone_number.unique'  => 'The customer phone number must be unique',
             'phone_number.digits' => 'The customer phone number doesnt have 10 digits',
             'phone_number.exists'  => 'The customer phone number doesnt exist',
             'password.required' => 'A password is required',
             'password.confirmed' => 'Password and confirm password doesnt match',
             'password.regex' => 'Password must be atleast 8 chars in length with atleat one upper case letter,
-                                one lower case letter, one number and one specal char(!,@,#,$)'
+                                one lower case letter, one number and one specal char(!,@,#,$)',
+            'type.in' => 'Only Phone, Facebook or Google login are supported'
         ];
     }
 

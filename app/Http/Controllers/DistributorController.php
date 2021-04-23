@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Distributor;
-use Illuminate\Http\Request;
+use App\Http\Requests\DistributorRequest;
+use Illuminate\Support\Facades\Auth;
 
 class DistributorController extends Controller
 {
@@ -23,9 +24,18 @@ class DistributorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DistributorRequest $request)
     {
-        //
+        $distributor = Distributor::where('phone_number',$request->phone_number)->first();
+        $email = !empty($distributor->user)?$distributor->user->email:NULL;
+        $creds = ['email' => $email, 'password' => $request->password];
+        if(!Auth::attempt($creds)) {
+             abort(401, 'The user is not authorized');
+        }
+        $authService = app('App\Services\AuthProxy');
+        $tokenDetails = $authService->getAccessToken($creds);
+        $tokenDetails['distributor'] = $distributor->load('user');
+        return $tokenDetails;
     }
 
     /**
