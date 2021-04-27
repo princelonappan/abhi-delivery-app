@@ -47,4 +47,14 @@ class CustomerController extends Controller
     {
         return Customer::where('id', $id)->first();
     }
+
+    public function update(CustomerRequest $request, $id)
+    {
+        $customer =  Customer::find($id);
+        $customer->name = $request->name;
+        $customer->phone_number = !empty($request->phone_number) ? $request->phone_number : $customer->phone_number;
+        $customer->date_of_birth = !empty($request->date_of_birth) ? $request->date_of_birth : $customer->date_of_birth;
+        $customer->save();
+        return Customer::where('id', $id)->first();
+    }
 }
