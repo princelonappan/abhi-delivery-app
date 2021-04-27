@@ -24,7 +24,10 @@ Route::prefix('admin')->group(function() {
     Route::resource('products', 'Admin\ProductController', ['names' => 'admin.products']);
     Route::resource('products.image', 'Admin\ProductImageController', ['names' => 'admin.products.image']);
     Route::resource('distributor.branch', 'Admin\BranchController', ['names' => 'admin.distributor.branch']);
-   }) ;
+    Route::resource('godown', 'Admin\GodownController', ['names' => 'admin.godown']);
+    Route::get('palet-inventory/download-sample-csv', 'Admin\PaletInventoryController@download')->name('admin.palet-inventory.download-sample-csv');
+    Route::resource('palet-inventory', 'Admin\PaletInventoryController', ['names' => 'admin.palet-inventory']);
+ });
 
 Route::get('/', function () {
     return view('welcome');

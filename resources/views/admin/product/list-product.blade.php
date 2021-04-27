@@ -68,10 +68,14 @@
                         </form>
                     </td>
                     <td>
-                        <a href="{{ route('admin.products.image.create',$product->id)}}" class="btn btn-danger" style="background-color:green; border-color:green;">Add Images </a>
+                        <a href="{{ route('admin.products.image.create',$product->id)}}"  >
+                        <img src="{{url('/img/icons-add-image.png')}}" title="Add Image" style="width:48%;"/>
+                        </a>
                     </td>
                     <td>
-                        <a href="{{ route('admin.products.image.index',$product->id)}}" class="btn btn-danger" style="background-color:green; border-color:green;">Show Images </a>
+                        <a href="{{ route('admin.products.image.index',$product->id)}}"  >
+                        <img src="{{url('/img/icons-image.png')}}" title="Show Image" style="width:45%;"/>
+                        </a>
                     </td>
                 </tr>
                 @php
