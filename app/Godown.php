@@ -9,7 +9,7 @@ class Godown extends Model
     protected $table = 'godown';
 
     protected $fillable = [
-        'name', 'godown_unique_id', 'details', 'latitude', 'longitude', 'address'
+        'name', 'godown_unique_id', 'details', 'latitude', 'longitude', 'address', 'status'
     ];
 
 }
