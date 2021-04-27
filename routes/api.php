@@ -20,6 +20,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
 	Route::post('customer/register', 'CustomerController@register');
 	Route::post('customer/login', 'CustomerController@login');
 	Route::get('customer', 'CustomerController@index');
+    Route::get('customer/{id}', 'CustomerController@show');
 
 	//Distributor API
 	Route::post('distributor/login', 'DistributorController@store');
