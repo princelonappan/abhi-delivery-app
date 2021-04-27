@@ -19,7 +19,8 @@ class ProductController extends Controller
             $products =  Product::where('category_id', request('category_id'))->get();
             return $products->load('category', 'items', 'images');
         }
-        return Product::all()->load('category', 'items', 'images');
+
+        return Product::all()->load('category', 'items', 'images', 'favourite');
     }
 
     /**

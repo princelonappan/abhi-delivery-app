@@ -44,4 +44,8 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
 	Route::post('order', 'OrderController@store');
 	Route::get('order', 'OrderController@index');
 	Route::get('order/{id}', 'OrderController@show');
+
+    Route::resource('favourites', 'FavouriteController');
+
+
 });

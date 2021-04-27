@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
-        'title', 'description', 
+        'title', 'description',
         'price_per_unit', 'price_per_palet', 'unit', 'qty', 'category_id'
     ];
 
@@ -19,6 +19,11 @@ class Product extends Model
     public function images()
     {
     	return $this->hasMany('App\ProductImage');
+    }
+
+    public function favourite()
+    {
+    	return $this->hasOne('App\Favourite', 'product_id');
     }
 
     public function category() {
