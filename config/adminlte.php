@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Admin',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Admin</b>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -226,7 +226,7 @@ return [
     'menu' => [
         [
             'text' => 'search',
-            'search' => true,
+            'search' => false,
             'topnav' => true,
         ],
         [
@@ -235,22 +235,22 @@ return [
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'Manage Merchant',
-            'url'         => 'admin/merchant',
+            'text'        => 'Manage Distributor',
+            'url'         => 'admin/distributor',
             'icon'        => 'far fa-fw ',
             // 'label'       => 4,
             // 'label_color' => 'success',
         ],
         [
             'text'        => 'Manage Category',
-            'url'         => 'admin/merchant',
+            'url'         => 'admin/category',
             'icon'        => 'far fa-fw',
             // 'label'       => 4,
             // 'label_color' => 'success',
         ],
         [
-            'text'        => 'Manage Branches',
-            'url'         => 'admin/merchant',
+            'text'        => 'Manage Products',
+            'url'         => 'admin/products',
             'icon'        => 'far fa-fw ',
             // 'label'       => 4,
             // 'label_color' => 'success',
