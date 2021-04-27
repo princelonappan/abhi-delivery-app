@@ -118,6 +118,10 @@ return [
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
 
+    'godown_zipcode_validation' => 'The following zipcode is already added to the Godown. :value',
+
+
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines

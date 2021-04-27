@@ -1,0 +1,92 @@
+@extends('admin.admin-template')
+
+@section('content_header')
+<h1>Manage Palet Inventory</h1>
+@stop
+
+@section('content')
+<div class="col-md-12">
+    @include('admin.breadcumb')
+
+    @if(session()->get('success'))
+    <div class="alert alert-success">
+        {{ session()->get('success') }}
+    </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div><br />
+        @endif
+</div>
+<div class="card">
+    <div class="card-header">
+        <div>
+            <a style="margin: 19px;" href="{{ route('admin.palet-inventory.download-sample-csv')}}" class="btn btn-primary">Download Sample CSV file </a>
+
+            <div style="float:right;">
+            <form enctype='multipart/form-data' action="{{ route('admin.palet-inventory.store') }}" method='POST'>
+            @csrf    
+            <label>Upload Product CSV file Here</label>
+                <input size='50' type='file' name='csv_import'>
+                </br>
+                <input type='submit' class="btn btn-primary" name='submit' value='Upload CSV'>
+            </form>
+        </div>
+        <div class="card-tools">
+            {{ $palet_inventory->links() }}
+        </div>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body p-0">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Godown name</th>
+                    <th>Godown id</th>
+                    <th>Product Name</th>
+                    <th>Product Id</th>
+                    <th>Palet Id</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                $i = 1
+                @endphp
+                @foreach ($palet_inventory as $_palet)
+                <tr>
+                    <td>{{ $i }}</td>
+                    <td>{{ $_palet->godown->name }}</td>
+                    <td>{{ $_palet->godown_id }}</td>
+                    <td>{{ $_palet->product->title }}</td>
+                    <td>{{ $_palet->product_id }}</td>
+                    <td>{{ $_palet->palet_id }}</td>
+                    @php
+                        if($_palet->available == 1) {
+                            $status = 'Available';
+                        } else {
+                            $status = 'Unavailable';
+                        }
+                    @endphp
+                    <td>{{ $status  }}</td>
+                    <td>{{ $_palet->created_at }}</td>
+                </tr>
+                @php
+                $i++;
+                @endphp
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>
+</div>
+
+@endsection
