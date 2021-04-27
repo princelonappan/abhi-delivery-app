@@ -19,6 +19,6 @@ class PaletInventory extends Model
 
     public function godown()
     {
-    	return $this->belongsTo('App\Godown');
+    	return $this->belongsTo('App\Godown', 'godown_id', 'godown_unique_id');
     }
 }

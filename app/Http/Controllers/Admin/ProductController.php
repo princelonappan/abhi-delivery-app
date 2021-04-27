@@ -71,6 +71,7 @@ class ProductController extends Controller
             'unit' => $request->get('unit'),
             'qty' => $request->get('quantity'),
             'category_id' => $request->get('category'),
+            'is_special_product' => $request->get('speical_product') == 1 ? 1 : 0,
         ]);
         $product->save();
         return redirect('/admin/products')->with('success', 'Product saved!');
@@ -126,6 +127,7 @@ class ProductController extends Controller
         $product->unit =  $request->get('unit');
         $product->qty =  $request->get('quantity');
         $product->category_id =  $request->get('category');
+        $product->is_special_product =  $request->get('speical_product') == 1 ? 1 : 0;
 
         $product->save();
         return redirect('/admin/products')->with('success', 'Product Updated!');

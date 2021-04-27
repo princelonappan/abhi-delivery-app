@@ -16,7 +16,7 @@ class CreateGodownTable extends Migration
         Schema::create('godown', function (Blueprint $table) {
             $table->id();
             $table->string('name', 150);
-            $table->string('godown_unique_id', 100);
+            $table->string('godown_unique_id', 100)->unique();
             $table->string('details', 255);
             $table->string('latitude', 100);
             $table->string('longitude', 100);

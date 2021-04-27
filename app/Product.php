@@ -8,7 +8,7 @@ class Product extends Model
 {
     protected $fillable = [
         'title', 'description',
-        'price_per_unit', 'price_per_palet', 'unit', 'qty', 'category_id'
+        'price_per_unit', 'price_per_palet', 'unit', 'qty', 'category_id', 'is_special_product'
     ];
 
     public function items()

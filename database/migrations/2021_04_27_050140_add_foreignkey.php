@@ -15,7 +15,7 @@ class AddForeignkey extends Migration
     {
         //
         Schema::table('palet_inventory', function (Blueprint $table) {
-            $table->foreign('godown_id')->references('id')->on('godown')->onDelete('cascade');
+            $table->foreign('godown_id')->references('godown_unique_id')->on('godown')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }

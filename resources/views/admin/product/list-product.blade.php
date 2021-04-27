@@ -29,8 +29,9 @@
             <thead>
                 <tr>
                     <th style="width: 10px">#</th>
+                    <th>Product Id</th>
                     <th>Product Title</th>
-                    <th>Description</th>
+                    <th style="width:20%;">Description</th>
                     <th>Price Per Unit</th>
                     <th>Price Per Palet</th>
                     <th>Unit</th>
@@ -47,8 +48,9 @@
                 @foreach ($products as $product)
                 <tr>
                     <td>{{ $i }}</td>
+                    <td>{{ $product->id }}</td>
                     <td>{{ $product->title }}</td>
-                    <td>{{ $product->description }}</td>
+                    <td >{{ $product->description }}</td>
                     <td>{{ $product->price_per_unit }}</td>
                     <td>{{ $product->price_per_palet }}</td>
                     <td>{{ $product->unit }}</td>

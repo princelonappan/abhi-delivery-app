@@ -67,6 +67,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Is special product?</label>
+                    <div class="col-sm-10">
+                        <input type="checkbox" style="width:20px; height:30px;" name="speical_product" value="1">
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Category</label>
                     <div class="col-sm-10">
                         <select class="form-control" id="category" name="category">

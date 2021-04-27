@@ -102,7 +102,9 @@ class PaletInventoryController extends Controller
                     'palet_id' => $palet_id, 'product_id' => $product_id
                 ])->first();
                 $product = Product::find($product_id);
-                $godown = Godown::find($godown_id);
+                $godown = Godown::where([
+                    'godown_unique_id' => $godown_id
+                ])->first();
 
                 if (empty($palet_inventory) && !empty($product) && !empty($godown)) {
                     $saved_count++;

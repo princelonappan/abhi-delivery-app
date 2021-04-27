@@ -15,7 +15,7 @@ class CreatePaletInventoryTable extends Migration
     {
         Schema::create('palet_inventory', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('godown_id');
+            $table->string('godown_id', 100);
             $table->foreignId('product_id');
             $table->string('palet_id');
             $table->string('available');
