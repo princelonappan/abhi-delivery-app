@@ -17,7 +17,7 @@
 <div class="card">
     <div class="card-header">
         <div>
-            <a style="margin: 19px;" href="{{ route('admin.distributor.create')}}" class="btn btn-primary">New Godown</a>
+            <a style="margin: 19px;" href="{{ route('admin.godown.create')}}" class="btn btn-primary">New Godown</a>
         </div>
         <div class="card-tools">
             {{ $godown->links() }}
