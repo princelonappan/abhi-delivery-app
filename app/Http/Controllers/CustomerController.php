@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
-    
+
 
     public function register(CustomerRequest $request)
     {
@@ -30,16 +30,21 @@ class CustomerController extends Controller
             }
             if($customer->otp) {
                 abort(401);
-            } 
-            $response = $authService->getAccessToken($creds);    
+            }
+            $response = $authService->getAccessToken($creds);
         }
         $response['customer'] = $customer;
-        
+
         return $response;
     }
 
     public function index()
     {
         return Customer::all();
+    }
+
+    public function show($id)
+    {
+        return Customer::where('id', $id)->first();
     }
 }
