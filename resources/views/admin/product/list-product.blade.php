@@ -71,12 +71,12 @@
                     </td>
                     <td>
                         <a href="{{ route('admin.products.image.create',$product->id)}}"  >
-                        <img src="{{url('/img/icons-add-image.png')}}" title="Add Image" style="width:48%;"/>
+                        <img src="{{url('/img/icons-add-image.png')}}" title="Add Image" style="width:69%;"/>
                         </a>
                     </td>
                     <td>
                         <a href="{{ route('admin.products.image.index',$product->id)}}"  >
-                        <img src="{{url('/img/icons-image.png')}}" title="Show Image" style="width:45%;"/>
+                        <img src="{{url('/img/icons-image.png')}}" title="Show Image" style="width:68%;"/>
                         </a>
                     </td>
                 </tr>

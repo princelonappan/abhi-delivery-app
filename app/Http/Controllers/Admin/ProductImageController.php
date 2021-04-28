@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Product;
 use App\Category;
 use App\ProductImage;
+use Illuminate\Support\Facades\File; 
+
 // use App\File;
 
 
@@ -117,9 +119,12 @@ class ProductImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($product_id)
+    public function destroy($product_id, $image_id)
     {
-        $image = ProductImage::find($product_id);
+        $image = ProductImage::find($image_id);
+        $image_name = $image->image_name;
+        $image_path = public_path() . '/images/'.$image_name;
+        File::delete($image_path);
         $image->delete();
         return redirect('/admin/products/'.$product_id.'/image')->with('success', 'Product Image deleted!');
     }

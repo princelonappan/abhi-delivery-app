@@ -139,8 +139,6 @@ class PaletInventoryController extends Controller
      */
     public function edit($id)
     {
-        $distributor = Distributor::find($id);
-        return view('admin.distributor.edit-distributor', compact('distributor'));
     }
 
     /**
@@ -152,24 +150,6 @@ class PaletInventoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'distributor_name' => 'required',
-            'email' => 'required',
-            'phone_number' => "required|unique:distributors,phone_number,$id,id",
-        ]);
-
-        $distributor = Distributor::find($id);
-        $distributor->name =  $request->get('distributor_name');
-        $distributor->phone_number =  $request->get('phone_number');
-        $distributor->save();
-
-        $updateFields = array("name" => $request->get('distributor_name'), "email" => $request->get('email'));
-        $password = $request->get('password');
-        if (isset($password) && !empty($password)) {
-            $updateFields = array_merge($updateFields, array('password' => Hash::make($password)));
-        }
-        User::where(['userable_type' => 'distributor', 'userable_id' => $id])->update($updateFields);
-        return redirect('/admin/distributor')->with('success', 'Category Updated!');
     }
 
     /**
@@ -180,12 +160,5 @@ class PaletInventoryController extends Controller
      */
     public function destroy($id)
     {
-        $distributor = Distributor::find($id);
-        $distributor->delete();
-
-        $whereArray = array('userable_type' => 'distributor', 'userable_id' => $id);
-        User::where($whereArray)->delete();
-
-        return redirect('/admin/distributor')->with('success', 'Distributor deleted!');
     }
 }
