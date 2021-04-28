@@ -15,7 +15,7 @@ class CartController extends Controller
     public function index()
     {
         $carts =  Cart::where('customer_id', request('customer_id'))->get();
-        return $carts->load('customer', 'items', 'items.product',  'items.product.category');
+        return $carts->load('customer', 'items', 'items.product',  'items.product.category', 'items.product.images');
     }
 
     public function store(CartRequest $request)
@@ -48,9 +48,9 @@ class CartController extends Controller
     {
         $cart = Cart::findOrFail($id);
         if(request('operation') == 'Add') {
-            $cart->addCustomerItem(request('product_id'), request('qty'), request('price'));   
+            $cart->addCustomerItem(request('product_id'), request('qty'), request('price'));
         } elseif (request('operation') == 'Update') {
-            $cart->updateCustomerItem(request('product_id'), request('qty'), request('price'));   
+            $cart->updateCustomerItem(request('product_id'), request('qty'), request('price'));
         } elseif (request('operation') == 'Delete') {
             $cart->removeCustomerItem(request('product_id'), request('qty'), request('price'));
         }
