@@ -27,6 +27,7 @@ Route::prefix('admin')->group(function() {
     Route::resource('godown', 'Admin\GodownController', ['names' => 'admin.godown']);
     Route::get('palet-inventory/download-sample-csv', 'Admin\PaletInventoryController@download')->name('admin.palet-inventory.download-sample-csv');
     Route::resource('palet-inventory', 'Admin\PaletInventoryController', ['names' => 'admin.palet-inventory']);
+    Route::resource('order', 'Admin\OrderController', ['names' => 'admin.order']);
  });
 
 Route::get('/', function () {

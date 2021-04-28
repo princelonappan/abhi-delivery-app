@@ -269,6 +269,13 @@ return [
             // 'label'       => 4,
             // 'label_color' => 'success',
         ],
+        [
+            'text'        => 'Manage Orders',
+            'url'         => 'admin/order',
+            'icon'        => 'fa fa-shopping-basket',
+            // 'label'       => 4,
+            // 'label_color' => 'success',
+        ],
 
         // ['header' => 'account_settings'],
         // [
