@@ -45,7 +45,19 @@ class CustomerController extends Controller
 
     public function show($id)
     {
-        return Customer::where('id', $id)->first();
+        $customer = Customer::with(['user'])->where('id', $id)->first();
+        $data = [];
+        $data['id'] = $customer->id;
+        $data['name'] = $customer->name;
+        $data['email'] = !empty($customer->user) ? $customer->user->email : "";
+        $data['phone_number'] = $customer->phone_number;
+        $data['status'] = $customer->status;
+        $data['otp'] = $customer->otp;
+        $data['date_of_birth'] = $customer->date_of_birth;
+        $data['created_at'] = $customer->created_at;
+        $data['updated_at'] = $customer->updated_at;
+        return $data;
+
     }
 
     public function update(CustomerRequest $request, $id)

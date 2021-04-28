@@ -21,6 +21,10 @@ class ProductController extends Controller
             $products = $products->where('category_id', request('category_id'));
 
         }
+        if(!empty(request('is_special_product'))) {
+            $products = $products->where('is_special_product', 1);
+
+        }
         $products = $products->get();
         $data = [];
         foreach($products as $key => $product) {
