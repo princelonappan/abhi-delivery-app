@@ -34,10 +34,7 @@
                     <th style="width:20%;">Description</th>
                     <th>Price Per Unit</th>
                     <th>Price Per Palet</th>
-                    <th>Unit</th>
-                    <th>Quantity</th>
                     <th>Category</th>
-                    <th>Created Date</th>
                     <th colspan=2>Actions</th>
                 </tr>
             </thead>
@@ -47,16 +44,16 @@
                 @endphp
                 @foreach ($products as $product)
                 <tr>
+                @php
+                $out = strlen($product->description) > 75 ? substr($product->description,0,75)." ..." : $product->description;
+                @endphp
                     <td>{{ $i }}</td>
                     <td>{{ $product->id }}</td>
                     <td>{{ $product->title }}</td>
-                    <td >{{ $product->description }}</td>
+                    <td >{{ $out  }}</td>
                     <td>{{ $product->price_per_unit }}</td>
                     <td>{{ $product->price_per_palet }}</td>
-                    <td>{{ $product->unit }}</td>
-                    <td>{{ $product->qty }}</td>
                     <td>{{ $product->category->category_name }}</td>
-                    <td>{{ $product->created_at }}</td>
                     <td>
                         <a href="{{ route('admin.products.edit',$product->id)}}" title="Edit">
                             <i class="nav-icon fas fa-edit"></i>
@@ -71,12 +68,12 @@
                     </td>
                     <td>
                         <a href="{{ route('admin.products.image.create',$product->id)}}"  >
-                        <img src="{{url('/img/icons-add-image.png')}}" title="Add Image" style="width:69%;"/>
+                        <img src="{{url('/img/icons-add-image.png')}}" title="Add Image" style="width:50%;"/>
                         </a>
                     </td>
                     <td>
                         <a href="{{ route('admin.products.image.index',$product->id)}}"  >
-                        <img src="{{url('/img/icons-image.png')}}" title="Show Image" style="width:68%;"/>
+                        <img src="{{url('/img/icons-image.png')}}" title="Show Image" style="width:48%;"/>
                         </a>
                     </td>
                 </tr>
