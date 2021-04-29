@@ -18,6 +18,7 @@ class HomePageController extends Controller
         $data = [];
         $data['featured_products'] = Product::with(['category', 'items', 'images'])->where('is_featured', 1)->get();
         $data['special_product'] = Product::with(['category', 'items', 'images'])->where('is_special_product', 1)->get();
+        $data['products'] = Product::with(['category', 'items', 'images'])->take(5)->get();
 
         return $data;
     }
@@ -38,18 +39,9 @@ class HomePageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(FavouriteRequest $request)
+    public function store(Request $request)
     {
-        $exists = Favourite::where('customer_id', $request->customer_id)->where('product_id', $request->product_id)->first();
-        if(!empty($exists)) {
-            $responseArray['message'] = 'Favourite alredy added';
-            $responseArray['success'] = false;
-            return response()->json($responseArray, 500);
-        }
-        $favourite = new Favourite();
-        $favourite->customer_id = $request->customer_id;
-        $favourite->product_id  = $request->product_id;
-        $favourite->save();
+
     }
 
     /**
