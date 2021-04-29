@@ -33,7 +33,7 @@ class OrderController extends Controller
             $orders = Order::all();
             return $orders;
         } else {
-            $orders = Order::paginate(10);
+            $orders = Order::orderBy('id', 'desc')->paginate(10);
             return view('admin.order.list-order')->with('orders', $orders);
         }
     }
