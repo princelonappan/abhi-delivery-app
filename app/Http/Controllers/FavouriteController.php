@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Favourite;
+use App\Product;
 use App\Http\Requests\FavouriteRequest;
 
 class FavouriteController extends Controller
@@ -22,8 +23,28 @@ class FavouriteController extends Controller
         }
         $favourites = Favourite::with(['products'])->where('customer_id', $request->customer_id)->get();
         $data = [];
-        foreach($favourites as $key => $favourite) {
-            $data[$key] = $favourite->products;
+        if(!$favourites->isEmpty()) {
+            foreach($favourites as $key => $favourite) {
+                $product = Product::where('id', $favourite->product_id)->first();
+                if(!empty($product)) {
+                    $data[$key]['favourite_id'] = $favourite->id;
+                    $data[$key]['id'] = $product->id;
+                    $data[$key]['title'] = $product->title;
+                    $data[$key]['description'] = $product->description;
+                    $data[$key]['price_per_unit'] = $product->price_per_unit;
+                    $data[$key]['price_per_palet'] = $product->price_per_palet;
+                    $data[$key]['unit'] = $product->unit;
+                    $data[$key]['qty'] = $product->qty;
+                    $data[$key]['category_id'] = $product->category_id;
+                    $data[$key]['is_favourite'] = true;
+                    $data[$key]['created_at'] = $product->created_at;
+                    $data[$key]['updated_at'] = $product->updated_at;
+                    $data[$key]['category'] = $product->category;
+                    $data[$key]['items'] = $product->items;
+                    $data[$key]['images'] = $product->images;
+                }
+
+            }
         }
         return $data;
     }
