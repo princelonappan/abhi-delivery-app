@@ -70,7 +70,13 @@
                 <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Is special product?</label>
                     <div class="col-sm-10">
-                        <input  type="checkbox" style="width:20px; height:30px;" name="speical_product" value="1" {{ $product->is_special_product == 1 ? 'checked' : '' }}>
+                        <input id="speical_product" type="checkbox" style="width:20px; height:30px;" name="speical_product" value="1" {{ $product->is_special_product == 1 ? 'checked' : '' }}>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Is featured?</label>
+                    <div class="col-sm-10">
+                        <input id="is_featured" type="checkbox" style="width:20px; height:30px;" name="is_featured" value="1" {{ $product->is_featured == 1 ? 'checked' : '' }}>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -161,6 +167,20 @@
             },
             unhighlight: function(element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#is_featured').change(function() {
+            if(this.checked) {
+                $(this).prop("checked", true);
+                $('#speical_product').prop("checked", false);
+            }
+        });
+
+        $('#speical_product').change(function() {
+            if(this.checked) {
+                $(this).prop("checked", true);
+                $('#is_featured').prop("checked", false);
             }
         });
     });

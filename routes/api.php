@@ -49,5 +49,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
 
     Route::resource('favourites', 'FavouriteController');
 
+    Route::get('home', 'HomePageController@index');
+
 
 });

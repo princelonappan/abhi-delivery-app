@@ -72,6 +72,7 @@ class ProductController extends Controller
             'qty' => $request->get('quantity'),
             'category_id' => $request->get('category'),
             'is_special_product' => $request->get('speical_product') == 1 ? 1 : 0,
+            'is_featured' => $request->get('is_featured') == 1 ? 1 : 0,
         ]);
         $product->save();
         return redirect('/admin/products')->with('success', 'Product saved!');
@@ -98,7 +99,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $categories = Category::all();
-        return view('admin.product.edit-product', compact('product', 'categories'));   
+        return view('admin.product.edit-product', compact('product', 'categories'));
     }
 
     /**
@@ -128,6 +129,7 @@ class ProductController extends Controller
         $product->qty =  $request->get('quantity');
         $product->category_id =  $request->get('category');
         $product->is_special_product =  $request->get('speical_product') == 1 ? 1 : 0;
+        $product->is_featured =  $request->get('is_featured') == 1 ? 1 : 0;
 
         $product->save();
         return redirect('/admin/products')->with('success', 'Product Updated!');
