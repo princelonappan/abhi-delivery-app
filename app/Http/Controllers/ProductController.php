@@ -33,6 +33,7 @@ class ProductController extends Controller
                 $fav_product = Favourite::where('customer_id', request('customer_id'))->where('product_id', $product->id)->first();
 
                 if (!empty($fav_product)) {
+                    $data[$key]['favourite_id'] = $fav_product->id;
                     $data[$key]['id'] = $product->id;
                     $data[$key]['title'] = $product->title;
                     $data[$key]['description'] = $product->description;
@@ -48,6 +49,7 @@ class ProductController extends Controller
                     $data[$key]['items'] = $product->items;
                     $data[$key]['images'] = $product->images;
                 } else {
+                    $data[$key]['favourite_id'] = null;
                     $data[$key]['id'] = $product->id;
                     $data[$key]['title'] = $product->title;
                     $data[$key]['description'] = $product->description;
@@ -64,6 +66,7 @@ class ProductController extends Controller
                     $data[$key]['images'] = $product->images;
                 }
             } else {
+                $data[$key]['favourite_id'] = null;
                 $data[$key]['id'] = $product->id;
                 $data[$key]['title'] = $product->title;
                 $data[$key]['description'] = $product->description;
