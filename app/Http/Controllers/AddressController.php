@@ -15,7 +15,7 @@ class AddressController extends Controller
     public function index()
     {
         $address = Address::where([
-            'addressable_id' => request('addressable_id'), 
+            'addressable_id' => request('addressable_id'),
             'addressable_type' => request('addressable_type')
         ])->get();
         return $address->load('addressable');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
+use App\User;
 use App\Http\Requests\CustomerRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -45,6 +46,55 @@ class CustomerController extends Controller
 
     public function show($id)
     {
-        return Customer::where('id', $id)->first();
+        $customer = Customer::with(['user'])->where('id', $id)->first();
+        $data = [];
+        $data['id'] = $customer->id;
+        $data['name'] = $customer->name;
+        $data['email'] = !empty($customer->user) ? $customer->user->email : "";
+        $data['phone_number'] = $customer->phone_number;
+        $data['status'] = $customer->status;
+        $data['otp'] = $customer->otp;
+        $data['date_of_birth'] = $customer->date_of_birth;
+        $data['created_at'] = $customer->created_at;
+        $data['updated_at'] = $customer->updated_at;
+        return $data;
+
+    }
+
+    public function update(CustomerRequest $request, $id)
+    {
+
+        $customer =  Customer::find($id);
+        $customer->name = $request->name;
+        $customer->phone_number = !empty($request->phone_number) ? $request->phone_number : $customer->phone_number;
+        $customer->date_of_birth = !empty($request->date_of_birth) ? $request->date_of_birth : $customer->date_of_birth;
+
+
+        $user = User::where('email', '=', $request->email)->where('userable_id', '!=', $id)->first();
+        if(!empty($user)) {
+            $responseArray['message'] = 'Email Already exists';
+            $responseArray['success'] = false;
+            return response()->json($responseArray, 500);
+
+        } else {
+            $user = User::where('userable_type', 'customer')->where('userable_id', $id)->first();
+            $user->email = $request->email;
+            $user->save();
+        }
+
+        $customer->save();
+
+        $customer = Customer::with(['user'])->where('id', $id)->first();
+        $data = [];
+        $data['id'] = $customer->id;
+        $data['name'] = $customer->name;
+        $data['email'] = !empty($customer->user) ? $customer->user->email : "";
+        $data['phone_number'] = $customer->phone_number;
+        $data['status'] = $customer->status;
+        $data['otp'] = $customer->otp;
+        $data['date_of_birth'] = $customer->date_of_birth;
+        $data['created_at'] = $customer->created_at;
+        $data['updated_at'] = $customer->updated_at;
+        return $data;
     }
 }
