@@ -28,6 +28,8 @@ Route::prefix('admin')->group(function() {
     Route::get('palet-inventory/download-sample-csv', 'Admin\PaletInventoryController@download')->name('admin.palet-inventory.download-sample-csv');
     Route::resource('palet-inventory', 'Admin\PaletInventoryController', ['names' => 'admin.palet-inventory']);
     Route::resource('order', 'Admin\OrderController', ['names' => 'admin.order']);
+
+    Route::resource('subscription', 'Admin\SubscriptionController', ['names' => 'admin.subscription']);
  });
 
 Route::get('/', function () {

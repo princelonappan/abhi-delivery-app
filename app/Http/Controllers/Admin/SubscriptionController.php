@@ -1,27 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Product;
+use App\Subscription;
 
-class HomePageController extends Controller
+class SubscriptionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-
-        $data = [];
-        $data['featured_products'] = Product::with(['category', 'items', 'images'])->where('is_featured', 1)->get();
-        $data['special_product'] = Product::with(['category', 'items', 'images'])->where('is_special_product', 1)->get();
-        $data['products'] = Product::with(['category', 'items', 'images'])->where('is_special_product', '!=', 1)
-                                ->where('is_featured', '!=', 1)->take(5)->get();
-
-        return $data;
+        //
     }
 
     /**
@@ -31,7 +25,8 @@ class HomePageController extends Controller
      */
     public function create()
     {
-        //
+        $subscription = Subscription::where('slug', 'subscription')->first();
+        return view('admin.subscription.subscription', compact('subscription'));
     }
 
     /**
@@ -42,6 +37,23 @@ class HomePageController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'subscription_amount' => 'required',
+            'no_days' => 'required|integer'
+        ]);
+        $subscription = Subscription::where('slug', 'subscription')->first();
+        if(!empty($subscription)) {
+            $subscription->subscription_amount = $request->subscription_amount;
+            $subscription->no_days = $request->no_days;
+            $subscription->save();
+        } else {
+            $subscription = new Subscription();
+            $subscription->subscription_amount = $request->subscription_amount;
+            $subscription->no_days = $request->no_days;
+            $subscription->slug = 'subscription';
+            $subscription->save();
+        }
+        return redirect('/admin/subscription/create')->with('success', 'Subscription Updated!');
 
     }
 
@@ -87,6 +99,6 @@ class HomePageController extends Controller
      */
     public function destroy($id)
     {
-
+        //
     }
 }

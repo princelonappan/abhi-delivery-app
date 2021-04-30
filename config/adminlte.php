@@ -276,6 +276,13 @@ return [
             // 'label'       => 4,
             // 'label_color' => 'success',
         ],
+        [
+            'text'        => 'Manage Subscription',
+            'url'         => 'admin/subscription/create',
+            'icon'        => 'fa fa-university',
+            // 'label'       => 4,
+            // 'label_color' => 'success',
+        ],
 
         // ['header' => 'account_settings'],
         // [
