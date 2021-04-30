@@ -30,6 +30,8 @@ Route::prefix('admin')->group(function() {
     Route::resource('order', 'Admin\OrderController', ['names' => 'admin.order']);
 
     Route::resource('subscription', 'Admin\SubscriptionController', ['names' => 'admin.subscription']);
+    Route::resource('vat', 'Admin\VatController', ['names' => 'admin.vat']);
+    Route::resource('delivery-charge', 'Admin\DeliveryController', ['names' => 'admin.delivery_charge']);
  });
 
 Route::get('/', function () {

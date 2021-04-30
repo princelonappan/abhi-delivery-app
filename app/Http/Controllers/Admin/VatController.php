@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Settings;
 
-class SubscriptionController extends Controller
+class VatController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,8 +25,8 @@ class SubscriptionController extends Controller
      */
     public function create()
     {
-        $subscription = Settings::where('slug', 'subscription')->first();
-        return view('admin.subscription.subscription', compact('subscription'));
+        $vat = Settings::where('slug', 'vat')->first();
+        return view('admin.vat.vat', compact('vat'));
     }
 
     /**
@@ -38,26 +38,24 @@ class SubscriptionController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'subscription_amount' => 'required',
-            'no_days' => 'required|integer'
+            'amount' => 'required'
         ]);
-        $subscription = Settings::where('slug', 'subscription')->first();
-        if(!empty($subscription)) {
-            $subscription->amount = $request->subscription_amount;
-            $subscription->no_days = $request->no_days;
-            $subscription->type = 1;
-            $subscription->slug = 'subscription';
-            $subscription->save();
+        $vat = Settings::where('slug', 'vat')->first();
+        if(!empty($vat)) {
+            $vat->amount = $request->amount;
+            $vat->no_days = $request->no_days;
+            $vat->type = 2;
+            $vat->slug = 'vat';
+            $vat->save();
         } else {
-            $subscription = new Settings();
-            $subscription->amount = $request->subscription_amount;
-            $subscription->no_days = $request->no_days;
-            $subscription->type = 1;
-            $subscription->slug = 'subscription';
-            $subscription->save();
+            $vat = new Settings();
+            $vat->amount = $request->amount;
+            $vat->no_days = $request->no_days;
+            $vat->type = 2;
+            $vat->slug = 'vat';
+            $vat->save();
         }
-        return redirect('/admin/subscription/create')->with('success', 'Subscription Updated!');
-
+        return redirect('/admin/vat/create')->with('success', 'Vat % Successfully Updated!');
     }
 
     /**

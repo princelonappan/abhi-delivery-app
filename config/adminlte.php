@@ -283,6 +283,20 @@ return [
             // 'label'       => 4,
             // 'label_color' => 'success',
         ],
+        [
+            'text'        => 'Manage Vat',
+            'url'         => 'admin/vat/create',
+            'icon'        => 'fa fa-university',
+            // 'label'       => 4,
+            // 'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Manage Delivery Charge',
+            'url'         => 'admin/delivery-charge/create',
+            'icon'        => 'fa fa-university',
+            // 'label'       => 4,
+            // 'label_color' => 'success',
+        ],
 
         // ['header' => 'account_settings'],
         // [

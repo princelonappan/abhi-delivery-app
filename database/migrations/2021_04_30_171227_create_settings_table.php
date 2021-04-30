@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubscriptionsTable extends Migration
+class CreateSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateSubscriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscriptions', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->decimal('subscription_amount', 15, 2)->nullable();
+            $table->decimal('amount', 15, 2)->nullable();
             $table->integer('no_days')->nullable();
+            $table->decimal('min_amount', 15, 2)->nullable();
+            $table->integer('type')->comment('1 => Fixed, 2 => Percentage')->nullable();
             $table->string('slug')->nullable();
             $table->timestamps();
         });
@@ -29,6 +31,6 @@ class CreateSubscriptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subscriptions');
+        Schema::dropIfExists('settings');
     }
 }

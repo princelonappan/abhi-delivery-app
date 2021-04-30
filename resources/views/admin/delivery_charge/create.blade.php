@@ -16,7 +16,7 @@
         </div>
 
         <div class="card-header">
-            <h3 class="card-title">Manage Subscription</h3>
+            <h3 class="card-title">Manage Delivery Charge</h3>
         </div>
 
         @if ($errors->any())
@@ -28,19 +28,19 @@
             </ul>
         </div><br />
         @endif
-        <form id="quickForm" action="{{ route('admin.subscription.store') }}" novalidate="novalidate" method="POST">
+        <form id="quickForm" action="{{ route('admin.delivery_charge.store') }}" novalidate="novalidate" method="POST">
             @csrf
             <div class="card-body">
                 <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label">Subscription Amount*</label>
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Delivery Charge*</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" value="{{ !empty($subscription->amount) ? $subscription->amount : old('subscription_amount')}}" id="subscription-amount" name="subscription_amount" placeholder="Subscription Amount">
+                        <input type="text" class="form-control" value="{{ !empty($delivery_charge->amount) ? $delivery_charge->amount : old('amount')}}" id="amount" name="amount" placeholder="Amount">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputPassword3" class="col-sm-2 col-form-label">Number of Days*</label>
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Min Amount*</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="no_days" value="{{ !empty($subscription->no_days) ? $subscription->no_days : old('no_days')}}" name="no_days" placeholder="No Days">
+                        <input type="text" class="form-control" id="min_amount" value="{{ !empty($delivery_charge->min_amount) ? $delivery_charge->min_amount : old('min_amount')}}" name="min_amount" placeholder="Min Amount">
                     </div>
                 </div>
             </div>
@@ -59,19 +59,19 @@
     $(function() {
         $('#quickForm').validate({
             rules: {
-                subscription_amount: {
+                amount: {
                     required: true,
                 },
-                no_days: {
+                min_amount: {
                     required: true,
                 },
             },
             messages: {
-                subscription_amount: {
+                amount: {
                     required: "Please enter a amount",
                 },
-                no_days: {
-                    required: "Please enter a days",
+                min_amount: {
+                    required: "Please enter min amount",
                 },
             },
             errorElement: 'span',

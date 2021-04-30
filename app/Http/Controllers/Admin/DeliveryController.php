@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Settings;
 
-class SubscriptionController extends Controller
+class DeliveryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,8 +25,8 @@ class SubscriptionController extends Controller
      */
     public function create()
     {
-        $subscription = Settings::where('slug', 'subscription')->first();
-        return view('admin.subscription.subscription', compact('subscription'));
+        $delivery_charge = Settings::where('slug', 'delivery_charge')->first();
+        return view('admin.delivery_charge.create', compact('delivery_charge'));
     }
 
     /**
@@ -38,26 +38,25 @@ class SubscriptionController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'subscription_amount' => 'required',
-            'no_days' => 'required|integer'
+            'amount' => 'required',
+            'min_amount' => 'required'
         ]);
-        $subscription = Settings::where('slug', 'subscription')->first();
-        if(!empty($subscription)) {
-            $subscription->amount = $request->subscription_amount;
-            $subscription->no_days = $request->no_days;
-            $subscription->type = 1;
-            $subscription->slug = 'subscription';
-            $subscription->save();
+        $delivery_charge = Settings::where('slug', 'delivery_charge')->first();
+        if(!empty($delivery_charge)) {
+            $delivery_charge->amount = $request->amount;
+            $delivery_charge->min_amount = $request->min_amount;
+            $delivery_charge->type = 1;
+            $delivery_charge->slug = 'delivery_charge';
+            $delivery_charge->save();
         } else {
-            $subscription = new Settings();
-            $subscription->amount = $request->subscription_amount;
-            $subscription->no_days = $request->no_days;
-            $subscription->type = 1;
-            $subscription->slug = 'subscription';
-            $subscription->save();
+            $delivery_charge = new Settings();
+            $delivery_charge->amount = $request->amount;
+            $delivery_charge->min_amount = $request->min_amount;
+            $delivery_charge->type = 1;
+            $delivery_charge->slug = 'delivery_charge';
+            $delivery_charge->save();
         }
-        return redirect('/admin/subscription/create')->with('success', 'Subscription Updated!');
-
+        return redirect('/admin/delivery-charge/create')->with('success', 'Vat % Successfully Updated!');
     }
 
     /**
