@@ -37,11 +37,20 @@ class Cart extends Model
 
     public function updateCustomerItem($productId, $quantity=1, $price)
     {
-        if($this->items()->where(['cart_id' => $this->id, 'product_id' => $productId])->exists()) {
-            $this->items()->where('product_id', $productId)->update([
-                'qty' => $quantity,
-                'price' => $price*$quantity
-            ]);
+        if(!empty($quantity)) {
+            if($this->items()->where(['cart_id' => $this->id, 'product_id' => $productId])->exists()) {
+                $this->items()->where('product_id', $productId)->update([
+                    'qty' => $quantity,
+                    'price' => $price*$quantity
+                ]);
+            }
+        } else {
+            $this->items()->where(['cart_id' => $this->id, 'product_id' => $productId])->delete();
+        }
+        $cart_count = $this->items()->where(['cart_id' => $this->id])->count();
+
+        if(empty($cart_count)) {
+            $this->delete();
         }
     }
 
