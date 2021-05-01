@@ -298,6 +298,14 @@ return [
             // 'label_color' => 'success',
         ],
 
+        [
+            'text'        => 'Manage Payment Mode',
+            'url'         => 'admin/payment-mode/create',
+            'icon'        => 'fa fa-university',
+            // 'label'       => 4,
+            // 'label_color' => 'success',
+        ],
+
         // ['header' => 'account_settings'],
         // [
         //     'text' => 'profile',

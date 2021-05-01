@@ -32,6 +32,7 @@ Route::prefix('admin')->group(function() {
     Route::resource('subscription', 'Admin\SubscriptionController', ['names' => 'admin.subscription']);
     Route::resource('vat', 'Admin\VatController', ['names' => 'admin.vat']);
     Route::resource('delivery-charge', 'Admin\DeliveryController', ['names' => 'admin.delivery_charge']);
+    Route::resource('payment-mode', 'Admin\PaymentModeController', ['names' => 'admin.payment_mode']);
  });
 
 Route::get('/', function () {

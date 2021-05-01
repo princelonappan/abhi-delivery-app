@@ -19,6 +19,8 @@ class CreateSettingsTable extends Migration
             $table->integer('no_days')->nullable();
             $table->decimal('min_amount', 15, 2)->nullable();
             $table->integer('type')->comment('1 => Fixed, 2 => Percentage')->nullable();
+            $table->integer('cash_on_delivery')->comment('1 => Enabled, 0 => Disabled')->nullable();
+            $table->integer('card_payment')->comment('1 => Enabled, 0 => Disabled')->nullable();
             $table->string('slug')->nullable();
             $table->timestamps();
         });
