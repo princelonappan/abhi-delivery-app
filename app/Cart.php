@@ -30,7 +30,7 @@ class Cart extends Model
             $this->items()->create([
                 'product_id' => $productId,
                 'qty' => $quantity,
-                'price' => $price,
+                'price' => $price*$quantity,
             ]);
         }
     }
@@ -40,7 +40,7 @@ class Cart extends Model
         if($this->items()->where(['cart_id' => $this->id, 'product_id' => $productId])->exists()) {
             $this->items()->where('product_id', $productId)->update([
                 'qty' => $quantity,
-                'price' => $price
+                'price' => $price*$quantity
             ]);
         }
     }

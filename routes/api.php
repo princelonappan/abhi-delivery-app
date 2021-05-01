@@ -36,6 +36,12 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
 	Route::post('cart', 'CartController@store');
 	Route::put('cart/{id}', 'CartController@update');
 
+    //Cart API
+	Route::get('cart-v2', 'CartV2Controller@index');
+	Route::get('cart-v2/{id}', 'CartV2Controller@show');
+	Route::post('cart-v2', 'CartV2Controller@store');
+	Route::put('cart-v2/{id}', 'CartV2Controller@update');
+
 	//Address API
 	Route::get('address/{id}', 'AddressController@show');
 	Route::get('address', 'AddressController@index');
