@@ -48,7 +48,7 @@ class CustomerRequest extends FormRequest
                     'phone_number' => 'required|unique:customers,phone_number,NULL,id|digits:10',
                     'email' => 'email|unique:users,email,NULL,id',
                     'date_of_birth' => 'required|date',
-                    'password' => 'required|confirmed|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!#@$?]*[!#@$?]).{8,}$/'//Min 8 chars, atleast one lower case, one upper case and a number with atleast one specal char($ or @)
+                    'password' => 'required|confirmed|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!#@$?]*[!#@$?]).{8,}$/'
                 ];
 
             }
@@ -92,8 +92,7 @@ class CustomerRequest extends FormRequest
             'phone_number.exists'  => 'The customer phone number doesnt exist',
             'password.required' => 'A password is required',
             'password.confirmed' => 'Password and confirm password doesnt match',
-            'password.regex' => 'Password must be atleast 8 chars in length with atleat one upper case letter,
-                                one lower case letter, one number and one specal char(!,@,#,$)',
+            'password.regex' => 'Password must be atleast 8 chars in length with atleat one upper case letter, one lower case letter, one number and one specal char(!,@,#,$)',
             'type.in' => 'Only Phone, Facebook or Google login are supported'
         ];
     }
