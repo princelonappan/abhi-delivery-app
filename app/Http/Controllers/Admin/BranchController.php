@@ -60,7 +60,7 @@ class BranchController extends Controller
     {
         $request->validate([
             'branch_name' => 'required',
-            'email' => 'required',
+            'email' => 'required|unique:users,email,NULL,id',
             'password' => 'required',
             'address1' => 'required',
             'city' => 'required',
@@ -144,7 +144,7 @@ class BranchController extends Controller
     {
         $request->validate([
             'branch_name' => 'required',
-            'email' => 'required',
+            'email' => "required|unique:users,email,$id,userable_id",
             'address1' => 'required',
             'city' => 'required',
             'state' => 'required',

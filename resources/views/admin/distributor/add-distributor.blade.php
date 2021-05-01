@@ -33,13 +33,13 @@
                 <div class="form-group row">
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="distributor-name" name="distributor_name" placeholder="Name">
+                        <input type="text" class="form-control" value="{{old('distributor_name')}}" id="distributor-name" name="distributor_name" placeholder="Name">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Email</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                        <input type="email" class="form-control" id="email" value="{{old('email')}}" name="email" placeholder="Email">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -51,7 +51,7 @@
                 <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Phone number</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Phone number">
+                        <input type="text" class="form-control" id="phone_number" value="{{old('phone_number')}}" name="phone_number" placeholder="Phone number">
                     </div>
                 </div>
             </div>

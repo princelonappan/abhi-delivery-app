@@ -56,7 +56,7 @@ class DistributorController extends Controller
     {
         $request->validate([
             'distributor_name' => 'required',
-            'email' => 'required',
+            'email' => 'required|unique:users,email,NULL,id',
             'password' => 'required',
             'phone_number' => 'required|unique:distributors'
         ]);
@@ -117,7 +117,7 @@ class DistributorController extends Controller
     {
         $request->validate([
             'distributor_name' => 'required',
-            'email' => 'required',
+            'email' => "required|unique:users,email,$id,userable_id",
             'phone_number' => "required|unique:distributors,phone_number,$id,id",
         ]);
 
