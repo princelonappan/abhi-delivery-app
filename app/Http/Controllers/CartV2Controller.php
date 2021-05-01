@@ -61,8 +61,8 @@ class CartV2Controller extends Controller
 
         $data = [];
         $cart =  Cart::where('customer_id', request('customer_id'))->where('status', 'Active')->first();
-        if(!empty($carts)) {
-            $data['cart'] = $carts->load('customer', 'items', 'items.product',  'items.product.category', 'items.product.images');
+        if(!empty($cart)) {
+            $data['cart'] = $cart->load('customer', 'items', 'items.product',  'items.product.category', 'items.product.images');
             $vat = Settings::where('slug', 'vat')->first();
             $vat_persantage = !empty($vat->amount) ? $vat->amount : 0;
             $product_total = 0;
@@ -112,9 +112,10 @@ class CartV2Controller extends Controller
         } elseif (request('operation') == 'Delete') {
             $cart->removeCustomerItem(request('product_id'), request('qty'), request('price'));
         }
+        $carts = Cart::where('id', $id)->first();
 
-        if(!empty($cart)) {
-            $data['cart'] = $cart->load('customer', 'items', 'items.product',  'items.product.category', 'items.product.images');
+        if(!empty($carts)) {
+            $data['cart'] = $carts->load('customer', 'items', 'items.product',  'items.product.category', 'items.product.images');
             $vat = Settings::where('slug', 'vat')->first();
             $vat_persantage = !empty($vat->amount) ? $vat->amount : 0;
             $product_total = 0;

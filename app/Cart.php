@@ -46,12 +46,14 @@ class Cart extends Model
             }
         } else {
             $this->items()->where(['cart_id' => $this->id, 'product_id' => $productId])->delete();
-        }
-        $cart_count = $this->items()->where(['cart_id' => $this->id])->count();
 
-        if(empty($cart_count)) {
-            $this->delete();
+            $cart_count = $this->items()->where(['cart_id' => $this->id])->count();
+
+            if($cart_count == 0) {
+                $this->delete();
+            }
         }
+
     }
 
     public function removeCustomerItem($productId)
