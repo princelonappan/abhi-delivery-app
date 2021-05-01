@@ -18,10 +18,10 @@ class HomePageController extends Controller
 
 
         $data = [];
-        $featured_products = Product::with(['category', 'items', 'images'])->where('is_featured', 1)->get();
-        $special_products = Product::with(['category', 'items', 'images'])->where('is_special_product', 1)->get();
+        $featured_products = Product::with(['category', 'items', 'images'])->where('is_featured', 1)->where('status', 1)->get();
+        $special_products = Product::with(['category', 'items', 'images'])->where('is_special_product', 1)->where('status', 1)->get();
         $products = Product::with(['category', 'items', 'images'])->where('is_special_product', '!=', 1)
-                                ->where('is_featured', '!=', 1)->take(5)->get();
+                                ->where('is_featured', '!=', 1)->where('status', 1)->take(5)->get();
         foreach($featured_products as $key => $featured_product) {
             if (!empty(request('customer_id'))) {
                 $fav_product = Favourite::where('customer_id', request('customer_id'))->where('product_id', $featured_product->id)->first();

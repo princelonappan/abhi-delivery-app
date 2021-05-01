@@ -80,6 +80,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Enable</label>
+                    <div class="col-sm-10">
+                        <input id="status" type="checkbox" style="width:20px; height:30px;" name="status" value="1" {{ $product->status == 1 ? 'checked' : '' }}>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Category</label>
                     <div class="col-sm-10">
                         <select class="form-control" id="category" name="category">

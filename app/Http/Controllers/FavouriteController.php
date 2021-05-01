@@ -25,7 +25,7 @@ class FavouriteController extends Controller
         $data = [];
         if(!$favourites->isEmpty()) {
             foreach($favourites as $key => $favourite) {
-                $product = Product::where('id', $favourite->product_id)->first();
+                $product = Product::where('id', $favourite->product_id)->where('status', 1)->first();
                 if(!empty($product)) {
                     $data[$key]['favourite_id'] = $favourite->id;
                     $data[$key]['id'] = $product->id;

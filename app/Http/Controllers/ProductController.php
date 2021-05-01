@@ -15,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products =  Product::with(['category', 'items', 'images']);
+        $products =  Product::with(['category', 'items', 'images'])->where('status', 1);
 
         if(!empty(request('category_id'))) {
             $products = $products->where('category_id', request('category_id'));
