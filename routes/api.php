@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], function() {
 
+    Route::post('customer/generate-otp', 'CustomerController@generateOtp');
+
 	//Customer API
 	Route::post('customer/register', 'CustomerController@register');
 	Route::post('customer/login', 'CustomerController@login');

@@ -6,6 +6,7 @@ use App\Customer;
 use App\User;
 use App\Http\Requests\CustomerRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Otp;
 
 class CustomerController extends Controller
 {
@@ -13,6 +14,13 @@ class CustomerController extends Controller
 
     public function register(CustomerRequest $request)
     {
+        $otp = Otp::where('mobile', $request->phone_number)->where('otp', $request->otp)->first();
+        if(empty($otp)) {
+            $responseArray['message'] = 'Invalid OTP';
+            $responseArray['success'] = false;
+            return response()->json($responseArray, 500);
+        }
+        Otp::where('mobile', $request->phone_number)->delete();
         return Customer::create($request->all());
     }
 
@@ -95,6 +103,28 @@ class CustomerController extends Controller
         $data['date_of_birth'] = $customer->date_of_birth;
         $data['created_at'] = $customer->created_at;
         $data['updated_at'] = $customer->updated_at;
+        return $data;
+    }
+
+    // Generate OTP
+    public function generateOtp(CustomerRequest $request) {
+        $exist = Customer::where('phone_number', $request->phone_number)->where('status', 'Active')->first();
+        if(!empty($exist)) {
+            $responseArray['message'] = 'Mobile Already exists';
+            $responseArray['success'] = false;
+            return response()->json($responseArray, 500);
+        }
+
+        $otp_value = rand(1000,9999);
+        // $otp_value = 1234;
+
+        $data['otp'] = $otp_value;
+
+        Otp::where('mobile', $request->phone_number)->delete();
+        $otp = new Otp();
+        $otp->mobile = $request->phone_number;
+        $otp->otp = $otp_value;
+        $otp->save();
         return $data;
     }
 }
