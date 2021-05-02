@@ -21,7 +21,14 @@ class CustomerController extends Controller
             return response()->json($responseArray, 500);
         }
         Otp::where('mobile', $request->phone_number)->delete();
-        return Customer::create($request->all());
+        Customer::create($request->all());
+
+        $authService = app('App\Services\AuthProxy');
+        $user = $authService->identityUser();
+        $customer = $user->load('userable');
+        // $response = $authService->getAccessToken($creds);
+        $response['customer'] = $customer;
+        return $response;
     }
 
     public function login(CustomerRequest $request)
