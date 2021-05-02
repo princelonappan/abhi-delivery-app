@@ -126,9 +126,12 @@ class CustomerController extends Controller
     public function updateEmail(CustomerRequest $request) {
         $exist = User::where('email', $request->email)->where('userable_id', '!=', $request->customer_id)->first();
         if(empty($exist)) {
-            $user = User::where('userable_id', $request->customer_id)->first();
-            $user->email = $request->email;
-            $user->save();
+            $user = User::where('userable_id', $request->customer_id)->where('userable_type', 'customer')->first();
+            if(!empty($user)) {
+                $user->email = $request->email;
+                $user->save();
+            }
+
 
             $customer = Customer::with(['user'])->where('id', $request->customer_id)->first();
             $data = [];

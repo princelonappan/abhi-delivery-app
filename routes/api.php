@@ -24,8 +24,8 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
 	Route::get('customer', 'CustomerController@index');
     Route::get('customer/{id}', 'CustomerController@show');
     Route::post('customer/{id}', 'CustomerController@update');
-    Route::post('customer/update-email', 'CustomerController@updateEmail');
-    Route::post('customer/update-phone', 'CustomerController@updatePhone');
+    Route::post('customer-update-email', 'CustomerController@updateEmail');
+    Route::post('customer-update-phone', 'CustomerController@updatePhone');
 
 	//Distributor API
 	Route::post('distributor/login', 'DistributorController@store');

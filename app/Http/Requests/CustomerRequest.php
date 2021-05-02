@@ -73,7 +73,7 @@ class CustomerRequest extends FormRequest
 
             }
 
-            if ($this->endpoint == 'api/v1/customer/update-email') {
+            if ($this->endpoint == 'api/v1/customer-update-email') {
                 $rules = [
                     'email' => 'email|unique:users,email,NULL,id',
                     'customer_id' => 'required',
@@ -81,9 +81,9 @@ class CustomerRequest extends FormRequest
 
             }
 
-            if ($this->endpoint == 'api/v1/customer/update-phone') {
+            if ($this->endpoint == 'api/v1/customer-update-phone') {
                 $rules = [
-                    'phone_number' => 'required|unique:customers,phone_number,NULL,id',
+                    'phone_number' => 'required',
                     'customer_id' => 'required',
                 ];
 
