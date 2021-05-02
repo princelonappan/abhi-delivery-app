@@ -102,24 +102,59 @@ class CustomerController extends Controller
 
     // Generate OTP
     public function generateOtp(CustomerRequest $request) {
-        $exist = Customer::where('phone_number', $request->phone_number)->where('status', 'Active')->first();
-        if(!empty($exist)) {
-            $responseArray['message'] = 'Mobile Already exists';
-            $responseArray['success'] = false;
-            return response()->json($responseArray, 500);
-        }
-
         $otp_value = rand(1000,9999);
         // $otp_value = 1234;
+        if(empty($request->customer_id)) {
+            $exist = Customer::where('phone_number', $request->phone_number)->where('status', 'Active')->first();
+            if(!empty($exist)) {
+                $responseArray['message'] = 'Mobile Already exists';
+                $responseArray['success'] = false;
+                return response()->json($responseArray, 500);
+            }
+            $data['otp'] = $otp_value;
 
-        $data['otp'] = $otp_value;
+            Otp::where('mobile', $request->phone_number)->delete();
+            $otp = new Otp();
+            $otp->mobile = $request->phone_number;
+            $otp->otp = $otp_value;
+            $otp->save();
+            return $data;
+        } else {
+            if(empty($request->customer_id)) {
+                $responseArray['message'] = 'Customer Id required';
+                $responseArray['success'] = false;
+                return response()->json($responseArray, 500);
+            }
+            $exist = Customer::where('phone_number', $request->phone_number)->where('id', '!=', $request->customer_id)->where('status', 'Active')->first();
+            if(!empty($exist)) {
+                $responseArray['message'] = 'Mobile Already exists';
+                $responseArray['success'] = false;
+                return response()->json($responseArray, 500);
+            }
+            $data['otp'] = $otp_value;
+            Otp::where('mobile', $request->phone_number)->delete();
+            $otp = new Otp();
+            $otp->mobile = $request->phone_number;
+            $otp->otp = $otp_value;
+            $otp->save();
+            $customer = Customer::with(['user'])->where('id', '!=', $request->customer_id)->first();
+            $data = [];
+            $data['id'] = $customer->id;
+            $data['name'] = $customer->name;
+            $data['email'] = !empty($customer->user) ? $customer->user->email : "";
+            $data['phone_number'] = $customer->phone_number;
+            $data['status'] = $customer->status;
+            $data['otp'] = $otp_value;
+            $data['date_of_birth'] = $customer->date_of_birth;
+            $data['created_at'] = $customer->created_at;
+            $data['updated_at'] = $customer->updated_at;
+            return $data;
+        }
 
-        Otp::where('mobile', $request->phone_number)->delete();
-        $otp = new Otp();
-        $otp->mobile = $request->phone_number;
-        $otp->otp = $otp_value;
-        $otp->save();
-        return $data;
+        $responseArray['message'] = 'Something went wrong';
+        $responseArray['success'] = false;
+        return response()->json($responseArray, 500);
+
     }
 
     // Update Email
@@ -154,31 +189,39 @@ class CustomerController extends Controller
 
     // Update Phone
     public function updatePhone(CustomerRequest $request) {
-        $exist = Customer::where('phone_number', $request->phone_number)->where('id', '!=', $request->customer_id)->first();
-        if(empty($exist)) {
-            $user = Customer::where('id', $request->customer_id)->first();
-            $user->name = $user->name;
-            $user->phone_number = $request->phone_number;
-            $user->status = $user->status;
-            $user->date_of_birth = $user->date_of_birth;
-            $user->save();
+        $otp = Otp::where('mobile', $request->phone_number)->where('otp', $request->otp)->first();
+        if(!empty($otp)) {
+            $exist = Customer::where('phone_number', $request->phone_number)->where('id', '!=', $request->customer_id)->first();
+            if(empty($exist)) {
+                $user = Customer::where('id', $request->customer_id)->first();
+                $user->name = $user->name;
+                $user->phone_number = $request->phone_number;
+                $user->status = $user->status;
+                $user->date_of_birth = $user->date_of_birth;
+                $user->save();
 
-            $customer = Customer::with(['user'])->where('id', $request->customer_id)->first();
-            $data = [];
-            $data['id'] = $customer->id;
-            $data['name'] = $customer->name;
-            $data['email'] = !empty($customer->user) ? $customer->user->email : "";
-            $data['phone_number'] = $customer->phone_number;
-            $data['status'] = $customer->status;
-            $data['otp'] = $customer->otp;
-            $data['date_of_birth'] = $customer->date_of_birth;
-            $data['created_at'] = $customer->created_at;
-            $data['updated_at'] = $customer->updated_at;
-            return $data;
+                $otp = Otp::where('mobile', $request->phone_number)->delete();
+
+                $customer = Customer::with(['user'])->where('id', $request->customer_id)->first();
+                $data = [];
+                $data['id'] = $customer->id;
+                $data['name'] = $customer->name;
+                $data['email'] = !empty($customer->user) ? $customer->user->email : "";
+                $data['phone_number'] = $customer->phone_number;
+                $data['status'] = $customer->status;
+                $data['date_of_birth'] = $customer->date_of_birth;
+                $data['created_at'] = $customer->created_at;
+                $data['updated_at'] = $customer->updated_at;
+                return $data;
+            }
+
+            $responseArray['message'] = 'Phone already exists';
+            $responseArray['success'] = false;
+            return response()->json($responseArray, 500);
         }
-
-        $responseArray['message'] = 'Phone already exists';
+        $responseArray['message'] = 'Invalid OTP';
         $responseArray['success'] = false;
         return response()->json($responseArray, 500);
+
     }
 }

@@ -113,9 +113,66 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        $product =  Product::with(['category', 'items', 'images'])->where('status', 1)->where('id', $id)->first();
+
+        if (!empty(request('customer_id'))) {
+
+            $fav_product = Favourite::where('customer_id', request('customer_id'))->where('product_id', $product->id)->first();
+
+            if (!empty($fav_product)) {
+                $data['favourite_id'] = $fav_product->id;
+                $data['id'] = $product->id;
+                $data['title'] = $product->title;
+                $data['description'] = $product->description;
+                $data['price_per_unit'] = $product->price_per_unit;
+                $data['price_per_palet'] = $product->price_per_palet;
+                $data['unit'] = $product->unit;
+                $data['qty'] = $product->qty;
+                $data['category_id'] = $product->category_id;
+                $data['is_favourite'] = true;
+                $data['created_at'] = $product->created_at;
+                $data['updated_at'] = $product->updated_at;
+                $data['category'] = $product->category;
+                $data['items'] = $product->items;
+                $data['images'] = $product->images;
+            } else {
+                $data['favourite_id'] = null;
+                $data['id'] = $product->id;
+                $data['title'] = $product->title;
+                $data['description'] = $product->description;
+                $data['price_per_unit'] = $product->price_per_unit;
+                $data['price_per_palet'] = $product->price_per_palet;
+                $data['unit'] = $product->unit;
+                $data['qty'] = $product->qty;
+                $data['category_id'] = $product->category_id;
+                $data['is_favourite'] = false;
+                $data['created_at'] = $product->created_at;
+                $data['updated_at'] = $product->updated_at;
+                $data['category'] = $product->category;
+                $data['items'] = $product->items;
+                $data['images'] = $product->images;
+            }
+        } else {
+            $data['favourite_id'] = null;
+            $data['id'] = $product->id;
+            $data['title'] = $product->title;
+            $data['description'] = $product->description;
+            $data['price_per_unit'] = $product->price_per_unit;
+            $data['price_per_palet'] = $product->price_per_palet;
+            $data['unit'] = $product->unit;
+            $data['qty'] = $product->qty;
+            $data['category_id'] = $product->category_id;
+            $data['is_favourite'] = false;
+            $data['created_at'] = $product->created_at;
+            $data['updated_at'] = $product->updated_at;
+            $data['category'] = $product->category;
+            $data['items'] = $product->items;
+            $data['images'] = $product->images;
+        }
+        return $data;
+
     }
 
     /**

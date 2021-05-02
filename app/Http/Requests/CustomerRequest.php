@@ -63,13 +63,21 @@ class CustomerRequest extends FormRequest
 
             }
             if ($this->endpoint == 'api/v1/customer/generate-otp') {
-                $rules = [
-                    'name' => 'required',
-                    'phone_number' => 'required|unique:customers,phone_number,NULL,id',
-                    'email' => 'email|unique:users,email,NULL,id',
-                    'date_of_birth' => 'required|date',
-                    'password' => 'required|confirmed|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!#@$?]*[!#@$?]).{8,}$/'//Min 8 chars, atleast one lower case, one upper case and a number with atleast one specal char($ or @)
-                ];
+                if(empty(request('customer_id'))) {
+                    $rules = [
+                        'name' => 'required',
+                        'phone_number' => 'required|unique:customers,phone_number,NULL,id',
+                        'email' => 'email|unique:users,email,NULL,id',
+                        'date_of_birth' => 'required|date',
+                        'password' => 'required|confirmed|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!#@$?]*[!#@$?]).{8,}$/'//Min 8 chars, atleast one lower case, one upper case and a number with atleast one specal char($ or @)
+                    ];
+                } else {
+                    $rules = [
+                        'customer_id' => 'required',
+                        'phone_number' => 'required',
+                    ];
+                }
+
 
             }
 
@@ -85,6 +93,7 @@ class CustomerRequest extends FormRequest
                 $rules = [
                     'phone_number' => 'required',
                     'customer_id' => 'required',
+                    'otp' => 'required',
                 ];
 
             }

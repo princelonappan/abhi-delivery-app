@@ -33,6 +33,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
 	//Category and Product API
 	Route::get('category', 'CategoryController@index');
 	Route::get('product', 'ProductController@index');
+	Route::get('product/{id}', 'ProductController@show');
 
 	//Cart API
 	Route::get('cart', 'CartController@index');
