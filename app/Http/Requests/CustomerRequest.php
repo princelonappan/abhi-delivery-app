@@ -45,7 +45,7 @@ class CustomerRequest extends FormRequest
             if($this->endpoint == 'api/v1/customer/register') {
                 $rules = [
                     'name' => 'required',
-                    'phone_number' => 'required|unique:customers,phone_number,NULL,id|digits:10',
+                    'phone_number' => 'required|unique:customers,phone_number,NULL,id',
                     'email' => 'email|unique:users,email,NULL,id',
                     'date_of_birth' => 'required|date',
                     'password' => 'required|confirmed|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!#@$?]*[!#@$?]).{8,}$/'
@@ -55,7 +55,7 @@ class CustomerRequest extends FormRequest
             if($this->endpoint == 'api/v1/customer/login') {
                 $rules = [
                     'type' => 'required|in:phone,facebook,google',
-                    'phone_number' => 'required_if:type,phone|exists:customers,phone_number|digits:10',
+                    'phone_number' => 'required_if:type,phone|exists:customers,phone_number',
                     'password' => 'required_if:type,phone',
                     'facebook_id' => 'required_if:type,facebook',
                     'google_id' => 'required_if:type,google'
@@ -65,10 +65,26 @@ class CustomerRequest extends FormRequest
             if ($this->endpoint == 'api/v1/customer/generate-otp') {
                 $rules = [
                     'name' => 'required',
-                    'phone_number' => 'required|unique:customers,phone_number,NULL,id|digits:10',
+                    'phone_number' => 'required|unique:customers,phone_number,NULL,id',
                     'email' => 'email|unique:users,email,NULL,id',
                     'date_of_birth' => 'required|date',
                     'password' => 'required|confirmed|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!#@$?]*[!#@$?]).{8,}$/'//Min 8 chars, atleast one lower case, one upper case and a number with atleast one specal char($ or @)
+                ];
+
+            }
+
+            if ($this->endpoint == 'api/v1/customer/update-email') {
+                $rules = [
+                    'email' => 'email|unique:users,email,NULL,id',
+                    'customer_id' => 'required',
+                ];
+
+            }
+
+            if ($this->endpoint == 'api/v1/customer/update-phone') {
+                $rules = [
+                    'phone_number' => 'required|unique:customers,phone_number,NULL,id',
+                    'customer_id' => 'required',
                 ];
 
             }
