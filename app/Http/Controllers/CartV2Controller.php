@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Cart;
 use App\Settings;
+use App\CartItem;
 use App\Http\Requests\CartRequest;
 
 class CartV2Controller extends Controller
@@ -48,6 +49,7 @@ class CartV2Controller extends Controller
 
     public function store(CartRequest $request)
     {
+
         $cart = Cart::where(['customer_id' => request('customer_id'), 'status' => 'Active'])->first();
         if(empty($cart)) {
             $cart = Cart::create([
@@ -56,7 +58,15 @@ class CartV2Controller extends Controller
             ]);
         }
         if($request->has('product_id')) {
-            $cart->addCustomerItem(request('product_id'), request('qty'), request('price'));
+            $cart_item = CartItem::where('cart_id', $cart->id)->where('product_id', request('product_id'))->first();
+            if(!empty($cart_item)) {
+                $cart_item->qty = $cart_item->qty+1;
+                $cart_item->price = $cart_item->qty*request('price');
+                $cart_item->save();
+
+            } else {
+                $cart->addCustomerItem(request('product_id'), request('qty'), request('price'));
+            }
         }
 
         $data = [];
