@@ -1,7 +1,7 @@
 @extends('admin.admin-template')
 
 @section('content_header')
-<h1>Manage {{$distributor->name}}'s Branch</h1>
+<h1>Manage {{$distributor->name}}s Branch</h1>
 @stop
 
 @section('content')
@@ -41,6 +41,7 @@
                 @php
                 $i = 1
                 @endphp
+                @if(!$branch->isEmpty())
                 @foreach ($branch as $_branch)
                 <tr>
                     <td>{{ $i }}</td>
@@ -55,22 +56,33 @@
                         </a>
                     </td>
                     <td>
-                        <form action="{{ route('admin.distributor.branch.destroy', ['distributor' => $distributor_id, 'branch' => $_branch->id] )}}" method="post">
+                        {{-- <form action="{{ route('admin.distributor.branch.destroy', ['distributor' => $distributor_id, 'branch' => $_branch->id] )}}" method="post">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger" type="submit">Delete</button>
-                        </form>
+                        </form> --}}
+                        <label class="switch">
+                            <input type="checkbox" data-href="{{ route('admin.branch.status') }}" data-id="{{ $_branch->id }}" class="checkbox" {{ !empty($_branch->status) && ($_branch->status == 1) ? 'checked' : '' }}>
+                            <span class="slider round"></span>
+                        </label>
                     </td>
                 </tr>
                 @php
                 $i++;
                 @endphp
                 @endforeach
+                @else
+                <tr>
+                    <td colspan="8">No Data</td>
+                </tr>
+                @endif
             </tbody>
         </table>
     </div>
     <!-- /.card-body -->
 </div>
 </div>
-
+<div style="display: none" class="loading">Loading&#8230;</div>
 @endsection
+
+

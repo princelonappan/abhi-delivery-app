@@ -25,12 +25,13 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        $categories = Category::where('status', 1)->get();
         if ($request->wantsJson) {
             $products = Product::all();
             return $products;
         } else {
             $products = Product::paginate(10);
-            return view('admin.product.list-product', compact('products'));
+            return view('admin.product.list-product', compact('products', 'categories'));
         }
     }
 
@@ -41,7 +42,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::where('status', 1)->get();
         return view('admin.product.add-product', compact('categories'));
     }
 
@@ -99,7 +100,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::find($id);
-        $categories = Category::all();
+        $categories = Category::where('status', 1)->get();
         return view('admin.product.edit-product', compact('product', 'categories'));
     }
 
@@ -150,5 +151,15 @@ class ProductController extends Controller
         $distributor->delete();
 
         return redirect('/admin/products')->with('success', 'Product deleted!');
+    }
+
+
+    // Update Status
+    public function updateStatus(Request $request) {
+        $status = $request->status;
+        $id = $request->dataId;
+        $branch = Product::find($id);
+        $branch->status = $status;
+        $branch->save();
     }
 }

@@ -103,7 +103,7 @@ class DistributorController extends Controller
     public function edit($id)
     {
         $distributor = Distributor::find($id);
-        return view('admin.distributor.edit-distributor', compact('distributor'));   
+        return view('admin.distributor.edit-distributor', compact('distributor'));
     }
 
     /**
@@ -150,5 +150,15 @@ class DistributorController extends Controller
         User::where($whereArray)->delete();
 
         return redirect('/admin/distributor')->with('success', 'Distributor deleted!');
+    }
+
+
+     // Update Status
+     public function updateStatus(Request $request) {
+        $status = $request->status;
+        $id = $request->dataId;
+        $branch = Distributor::find($id);
+        $branch->status = $status;
+        $branch->save();
     }
 }

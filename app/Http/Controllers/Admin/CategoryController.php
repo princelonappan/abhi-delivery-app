@@ -84,7 +84,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::find($id);
-        return view('admin.category.edit-category', compact('category'));   
+        return view('admin.category.edit-category', compact('category'));
     }
 
     /**
@@ -119,5 +119,14 @@ class CategoryController extends Controller
         $category->delete();
 
         return redirect('/admin/category')->with('success', 'Category deleted!');
+    }
+
+    // Update Status
+    public function updateStatus(Request $request) {
+        $status = $request->status;
+        $id = $request->dataId;
+        $branch = Category::find($id);
+        $branch->status = $status;
+        $branch->save();
     }
 }

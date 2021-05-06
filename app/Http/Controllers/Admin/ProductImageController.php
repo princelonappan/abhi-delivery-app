@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Product;
 use App\Category;
 use App\ProductImage;
-use Illuminate\Support\Facades\File; 
+use Illuminate\Support\Facades\File;
 
 // use App\File;
 
@@ -35,7 +35,7 @@ class ProductImageController extends Controller
             return $images;
         } else {
             $images = ProductImage::paginate(10);
-            
+
             return view('admin.image.list-image', compact('images', 'product_id'));
         }
     }
@@ -48,7 +48,7 @@ class ProductImageController extends Controller
     public function create($product_id)
     {
         $product = Product::find($product_id);
-        $categories = Category::all();
+        $categories = Category::where('status', 1)->get();
         return view('admin.image.add-image', compact('categories', 'product'));
     }
 

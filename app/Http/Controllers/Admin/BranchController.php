@@ -32,10 +32,10 @@ class BranchController extends Controller
     {
         $distributor = Distributor::find($distributor_id);
         if ($request->wantsJson) {
-            $branch = Distributor::all();
+            $branch = Distributor::where('status', 1)->get();
             return $branch;
         } else {
-            $branch = Branch::paginate(10);
+            $branch = Branch::where('distributor_id', $distributor_id)->paginate(10);
             return view('admin.branch.list-branch', compact('branch', 'distributor_id', 'distributor'));
         }
     }
@@ -130,7 +130,7 @@ class BranchController extends Controller
     public function edit($distributor_id, $id)
     {
         $branch = Branch::find($id);
-        return view('admin.branch.edit-branch', compact('branch'));   
+        return view('admin.branch.edit-branch', compact('branch'));
     }
 
     /**
@@ -161,7 +161,7 @@ class BranchController extends Controller
         $branch->phone_number = $request->get('phone_number');
         $branch->status = 1;
         $branch->save();
-        
+
         //Updating the User table
         $updateFields = array("name"=> $request->get('branch_name'), "email" => $request->get('email'));
         $password = $request->get('password');
@@ -204,5 +204,14 @@ class BranchController extends Controller
         Address::where($whereAddressArray)->delete();
 
         return redirect('/admin/distributor/'.$distributor_id.'/branch')->with('success', 'Branch deleted!');
+    }
+
+    // Update Status
+    public function updateStatus(Request $request) {
+        $status = $request->status;
+        $id = $request->dataId;
+        $branch = Branch::find($id);
+        $branch->status = $status;
+        $branch->save();
     }
 }

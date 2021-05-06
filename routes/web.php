@@ -19,11 +19,17 @@ Route::prefix('admin')->group(function() {
     Route::get('logout/', 'Auth\AdminLoginController@logout')->name('admin.logout');
     Route::get('/', 'Auth\AdminController@index')->name('admin.dashboard');
     Route::resource('category', 'Admin\CategoryController', ['names' => 'admin.category']);
+    Route::post('admin-category-status', 'Admin\CategoryController@updateStatus')->name('admin.category.status');
+
     Route::resource('distributor', 'Admin\DistributorController', ['names' => 'admin.distributor']);
+    Route::post('admin-distributor-status', 'Admin\DistributorController@updateStatus')->name('admin.distributor.status');
     // Route::resource('distributor.branch', 'Admin\BranchController');
     Route::resource('products', 'Admin\ProductController', ['names' => 'admin.products']);
+    Route::post('admin-products-status', 'Admin\ProductController@updateStatus')->name('admin.products.status');
     Route::resource('products.image', 'Admin\ProductImageController', ['names' => 'admin.products.image']);
     Route::resource('distributor.branch', 'Admin\BranchController', ['names' => 'admin.distributor.branch']);
+    Route::post('admin-branch-status', 'Admin\BranchController@updateStatus')->name('admin.branch.status');
+
     Route::resource('godown', 'Admin\GodownController', ['names' => 'admin.godown']);
     Route::get('palet-inventory/download-sample-csv', 'Admin\PaletInventoryController@download')->name('admin.palet-inventory.download-sample-csv');
     Route::resource('palet-inventory', 'Admin\PaletInventoryController', ['names' => 'admin.palet-inventory']);

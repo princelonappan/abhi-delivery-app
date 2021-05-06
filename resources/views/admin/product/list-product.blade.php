@@ -60,11 +60,15 @@
                         </a>
                     </td>
                     <td>
-                        <form action="{{ route('admin.products.destroy', $product    ->id)}}" method="post">
+                        {{-- <form action="{{ route('admin.products.destroy', $product    ->id)}}" method="post">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger" type="submit">Delete</button>
-                        </form>
+                        </form> --}}
+                        <label class="switch">
+                            <input type="checkbox" data-href="{{ route('admin.products.status') }}" data-id="{{ $product->id }}" class="checkbox" {{ !empty($product->status) && ($product->status == 1) ? 'checked' : '' }}>
+                            <span class="slider round"></span>
+                        </label>
                     </td>
                     <td>
                         <a href="{{ route('admin.products.image.create',$product->id)}}"  >
@@ -87,5 +91,5 @@
     <!-- /.card-body -->
 </div>
 </div>
-
+<div style="display: none" class="loading">Loading&#8230;</div>
 @endsection

@@ -51,11 +51,15 @@
                         </a>
                     </td>
                     <td>
-                        <form action="{{ route('admin.category.destroy', $category->id)}}" method="post">
+                        {{-- <form action="{{ route('admin.category.destroy', $category->id)}}" method="post">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger" type="submit">Delete</button>
-                        </form>
+                        </form> --}}
+                        <label class="switch">
+                            <input type="checkbox" data-href="{{ route('admin.category.status') }}" data-id="{{ $category->id }}" class="checkbox" {{ !empty($category->status) && ($category->status == 1) ? 'checked' : '' }}>
+                            <span class="slider round"></span>
+                        </label>
                     </td>
                 </tr>
                 @php
@@ -68,5 +72,5 @@
     <!-- /.card-body -->
 </div>
 </div>
-
+<div style="display: none" class="loading">Loading&#8230;</div>
 @endsection

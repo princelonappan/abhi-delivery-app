@@ -55,11 +55,15 @@
                         </a>
                     </td>
                     <td>
-                        <form action="{{ route('admin.distributor.destroy', $_distributor->id)}}" method="post">
+                        {{-- <form action="{{ route('admin.distributor.destroy', $_distributor->id)}}" method="post">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger" type="submit">Delete</button>
-                        </form>
+                        </form> --}}
+                        <label class="switch">
+                            <input type="checkbox" data-href="{{ route('admin.distributor.status') }}" data-id="{{ $_distributor->id }}" class="checkbox" {{ !empty($_distributor->status) && ($_distributor->status == 1) ? 'checked' : '' }}>
+                            <span class="slider round"></span>
+                        </label>
                     </td>
                     <td>
                         <a href="{{ route('admin.distributor.branch.index',$_distributor->id)}}" class="btn btn-danger" style="background-color:green; border-color:green;">Manage Branches </a>
@@ -75,5 +79,5 @@
     <!-- /.card-body -->
 </div>
 </div>
-
+<div style="display: none" class="loading">Loading&#8230;</div>
 @endsection
