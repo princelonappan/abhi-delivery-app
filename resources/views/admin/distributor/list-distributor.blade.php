@@ -19,6 +19,18 @@
         <div>
             <a style="margin: 19px;" href="{{ route('admin.distributor.create')}}" class="btn btn-primary">New Distributor</a>
         </div>
+        <form action="{{ route('admin.distributor.index') }}" method="GET">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" name="search" value="{{ !empty($search) ? $search : ''  }}" class="form-control">
+
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary" value="{{ old('search') }}">Search</button>
+                </div>
+            </div>
+
+        </form>
         <div class="card-tools">
             {{ $distributor->links() }}
         </div>

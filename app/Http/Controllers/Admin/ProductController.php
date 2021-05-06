@@ -25,13 +25,23 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        $category_id  = $request->category_filter;
         $categories = Category::where('status', 1)->get();
         if ($request->wantsJson) {
-            $products = Product::all();
+            if(!empty($category_id)) {
+                $products = Product::where('category_id', $category_id)->get();
+            } else {
+                $products = Product::all();
+            }
+
             return $products;
         } else {
-            $products = Product::paginate(10);
-            return view('admin.product.list-product', compact('products', 'categories'));
+            if (!empty($category_id)) {
+                $products = Product::where('category_id', $category_id)->paginate(10);
+            } else {
+                $products = Product::paginate(10);
+            }
+            return view('admin.product.list-product', compact('products', 'categories', 'category_id'));
         }
     }
 

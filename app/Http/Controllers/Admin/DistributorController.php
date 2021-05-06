@@ -27,12 +27,21 @@ class DistributorController extends Controller
      */
     public function index(Request $request)
     {
+        $search = $request->search;
         if ($request->wantsJson) {
-            $distributor = Distributor::all();
+            if(!empty($search)) {
+                $distributor = Distributor::where('name', 'LIKE', "%$search%")->paginate(10);
+            } else{
+                $distributor = Distributor::all();
+            }
             return $distributor;
         } else {
-            $distributor = Distributor::paginate(10);
-            return view('admin.distributor.list-distributor')->with('distributor', $distributor);
+            if(!empty($search)) {
+                $distributor = Distributor::where('name', 'LIKE', "%$search%")->paginate(10);
+            } else {
+                $distributor = Distributor::paginate(10);
+            }
+            return view('admin.distributor.list-distributor')->with(['distributor' => $distributor, 'search' => $search]);
         }
     }
 

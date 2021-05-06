@@ -19,6 +19,17 @@
         <div>
             <a style="margin: 19px;" href="{{ route('admin.products.create')}}" class="btn btn-primary">New Product</a>
         </div>
+        <div class="col-md-4 pull-right">
+            <form action="">
+                <select class="form-control" name="category_filter" id="category_filter" onchange="this.form.submit()">
+                    <option value="">Choose Category</option>
+                    @foreach($categories as $key => $value)
+                        <option {{ !empty($category_id) && $category_id == $value->id ? 'selected' : '' }} value="{{ $value->id }}">{{ $value->category_name }}</option>
+                    @endforeach
+                </select>
+            </form>
+
+        </div>
         <div class="card-tools">
             {{ $products->links() }}
         </div>
