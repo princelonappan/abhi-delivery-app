@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Order;
 use App\Cart;
 use App\Address;
+use App\Settings;
 use App\Http\Requests\OrderRequest;
 
 class OrderController extends Controller
@@ -28,11 +29,19 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request)
     {
-        //print_r($request->only((new Address)->attributes));exit;
         $cart = Cart::find(request('cart_id'))->load('items');
+        $val = Settings::where('slug', 'vat')->first();
+        $delivery_charge = Settings::where('slug', 'delivery_charge')->first();
         $order = Order::create([
             'customer_id' => $cart->customer_id,
-            'order_total' => request('order_total') 
+            'order_total' => request('order_total'),
+            'product_total' => request('product_total'),
+            'delivery_charge' => request('delivery_charge'),
+            'delivery_charge_percentage' => $delivery_charge->amount,
+            'delivery_charge_min_amount' => $delivery_charge->min_amount,
+            'vat' => request('vat'),
+            'vat_percentage' => !empty($val) ? $val->amount : 0,
+            'payment_type' => request('payment_type')
         ]);
         $order->createOrderItems($cart);
         $order->address()->create($request->except(['cart_id', 'order_total']));

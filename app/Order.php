@@ -8,7 +8,7 @@ use App\Address;
 
 class Order extends Model
 {
-	protected $fillable = ['customer_id', 'status', 'order_total'];
+	protected $fillable = ['customer_id', 'status', 'order_total', 'product_total', 'delivery_charge', 'delivery_charge_percentage', 'delivery_charge_min_amount', 'vat', 'vat_percentage', 'payment_type'];
 
     public function customer()
     {
@@ -22,7 +22,7 @@ class Order extends Model
 
     public function address()
     {
-    	return $this->morphOne('App\Address', 'addressable');	
+    	return $this->morphOne('App\Address', 'addressable');
     }
 
     public function createOrderItems($cart)

@@ -57,7 +57,11 @@ class OrderRequest extends FormRequest
                 'city' => 'required',
                 'state' => 'required',
                 'zip' => 'required',
-                'country' => 'required'
+                'country' => 'required',
+                'product_total' => 'required',
+                'delivery_charge' => 'required',
+                'vat' => 'required',
+                'payment_type' => 'required'
             ];
         }
 
