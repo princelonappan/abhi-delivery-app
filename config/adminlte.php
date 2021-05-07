@@ -187,7 +187,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'admin/distributor',
+    'dashboard_url' => 'admin/dashboard',
     'logout_url' => 'logout',
     'login_url' => 'admin/login',
     'register_url' => 'register',
@@ -230,9 +230,9 @@ return [
             'topnav' => true,
         ],
         [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
+            // 'text' => 'blog',
+            // 'url'  => 'admin/blog',
+            // 'can'  => 'manage-blog',
         ],
         [
             'text'        => 'Manage Distributor',
