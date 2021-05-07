@@ -50,12 +50,16 @@
         </div>
         <!-- /.col -->
         <div class="col-sm-4 invoice-col">
-            
+
         </div>
         <!-- /.col -->
         <div class="col-sm-4 invoice-col">
             <br>
             <b>Order ID:</b> {{$order->id}}<br>
+            <b>Product Total:</b> {{$order->product_total}}<br>
+            <b>Vat Amount:</b> {{$order->vat}}<br>
+            <b>Vat Percentage:</b> {{ number_format($order->vat_percentage,1) }}%<br>
+            <b>Delivery Charge:</b> {{ $order->delivery_charge }}<br>
             <b>Order Total:</b> {{$order->order_total}}<br>
             <b>Order Status:</b> {{$order->status}}<br>
         </div>
