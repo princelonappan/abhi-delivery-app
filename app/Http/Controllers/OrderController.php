@@ -58,6 +58,6 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        return Order::findOrFail($id)->load('items');
+        return Order::findOrFail($id)->load('items', 'items.product', 'items.product.images');
     }
 }
