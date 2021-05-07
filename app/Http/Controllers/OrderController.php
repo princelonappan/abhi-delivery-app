@@ -60,4 +60,22 @@ class OrderController extends Controller
     {
         return Order::findOrFail($id)->load('items', 'items.product', 'items.product.images');
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function cancelOrder(OrderRequest $request) {
+        $order = Order::where('id', $request->id)->where('customer_id', $request->customer_id)->first();
+        if(!empty($order)) {
+            $order->status = "Canceled";
+            $order->save();
+            return Order::findOrFail($request->id)->load('items', 'items.product', 'items.product.images');
+        }
+        $responseArray['message'] = 'Something went wrong';
+        $responseArray['success'] = false;
+        return response()->json($responseArray, 500);
+    }
 }

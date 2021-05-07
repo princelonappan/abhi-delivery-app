@@ -67,6 +67,7 @@
                                     <option value="Confirmed" {{ $order->status == 'Confirmed' ? 'selected' : ''}}>Confirmed</option>
                                     <option value="Out for delivery" {{ $order->status == 'Out for delivery' ? 'selected' : ''}}>Out for delivery</option>
                                     <option value="Delivered" {{ $order->status == 'Delivered' ? 'selected' : ''}}>Delivered</option>
+                                    <option value="Canceled" {{ $order->status == 'Canceled' ? 'selected' : ''}}>Canceled</option>
                                 </select> &nbsp;&nbsp;
                                 <button type="submit" class="btn btn-primary">Update Status</button>
                             </form>

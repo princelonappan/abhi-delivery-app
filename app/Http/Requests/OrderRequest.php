@@ -44,25 +44,34 @@ class OrderRequest extends FormRequest
         $this->verb = $this->getMethod();
 
         if($this->verb == 'POST') {
-            $rules = [
-                'cart_id' => [
-                    'required',
-                    Rule::exists('carts', 'id')->where(function($query) {
-                        return $query->where('status', 'Active');
-                    })
-                ],
-                'order_total' => 'required|numeric',
-                'address' => 'required',
-                'address_type' => 'required',
-                'city' => 'required',
-                'state' => 'required',
-                'zip' => 'required',
-                'country' => 'required',
-                'product_total' => 'required',
-                'delivery_charge' => 'required',
-                'vat' => 'required',
-                'payment_type' => 'required'
-            ];
+            if($this->endpoint == 'api/v1/order-cancel') {
+                $rules = [
+                    'id' => 'required',
+                    'customer_id' => 'required'
+                ];
+
+            } else {
+                $rules = [
+                    'cart_id' => [
+                        'required',
+                        Rule::exists('carts', 'id')->where(function($query) {
+                            return $query->where('status', 'Active');
+                        })
+                    ],
+                    'order_total' => 'required|numeric',
+                    'address' => 'required',
+                    'address_type' => 'required',
+                    'city' => 'required',
+                    'state' => 'required',
+                    'zip' => 'required',
+                    'country' => 'required',
+                    'product_total' => 'required',
+                    'delivery_charge' => 'required',
+                    'vat' => 'required',
+                    'payment_type' => 'required'
+                ];
+            }
+
         }
 
         return $rules;
