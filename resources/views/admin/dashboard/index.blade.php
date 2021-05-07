@@ -31,7 +31,7 @@
               <div class="inner">
                 <h3>{{ $distributors }}</h3>
 
-                <p>distributors</p>
+                <p>Distributors</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
