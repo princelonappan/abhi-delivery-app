@@ -34,7 +34,7 @@ class DashboardController extends Controller
         $customers = Customer::where('status', 'Active')->count();
         $distributors = Distributor::where('status', 1)->count();
         $products = Product::where('status', 1)->count();
-        $orders = Order::count();
+        $orders = Order::where('status', '!=', 'Canceled')->count();
         return view('admin.dashboard.index', compact('customers', 'distributors', 'orders', 'products'));
     }
 
