@@ -27,7 +27,7 @@ class CartV2Controller extends Controller
                 $product_total+=$item->price;
             }
             // $vat_amount = (!empty($vat_persantage) && !empty($product_total)) ? $product_total/$vat_persantage : 0;
-            $vat_amount = (!empty($vat_persantage) && !empty($product_total)) ? ($vat_persantage/$product_total)*100 : 0;
+            $vat_amount = (!empty($vat_persantage) && !empty($product_total)) ? ($vat_persantage/100)*$product_total : 0;
             $delivery = $vat = Settings::where('slug', 'delivery_charge')->first();
             $delivery_charge = 0;
 
@@ -84,7 +84,7 @@ class CartV2Controller extends Controller
                 $product_total+=$item->price;
             }
             // $vat_amount = (!empty($vat_persantage) && !empty($product_total)) ? $product_total/$vat_persantage : 0;
-            $vat_amount = (!empty($vat_persantage) && !empty($product_total)) ? ($vat_persantage/$product_total)*100 : 0;
+            $vat_amount = (!empty($vat_persantage) && !empty($product_total)) ? ($vat_persantage/100)*$product_total : 0;
             $delivery = $vat = Settings::where('slug', 'delivery_charge')->first();
             $delivery_charge = 0;
 
@@ -137,7 +137,7 @@ class CartV2Controller extends Controller
             foreach($data['cart']->items as $item) {
                 $product_total+=$item->price;
             }
-            $vat_amount = (!empty($vat_persantage) && !empty($product_total)) ? ($vat_persantage/$product_total)*100 : 0;
+            $vat_amount = (!empty($vat_persantage) && !empty($product_total)) ? ($vat_persantage/100)*$product_total : 0;
             $delivery = $vat = Settings::where('slug', 'delivery_charge')->first();
             $delivery_charge = 0;
 
