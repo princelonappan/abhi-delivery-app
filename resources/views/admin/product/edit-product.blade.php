@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputPassword3" class="col-sm-2 col-form-label">Is special product?</label>
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Is offer product?</label>
                     <div class="col-sm-10">
                         <input id="speical_product" type="checkbox" style="width:20px; height:30px;" name="speical_product" value="1" {{ $product->is_special_product == 1 ? 'checked' : '' }}>
                     </div>

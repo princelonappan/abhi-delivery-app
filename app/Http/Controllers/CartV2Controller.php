@@ -149,8 +149,10 @@ class CartV2Controller extends Controller
             $data['vat'] = $vat_amount;
             $data['delivery_charge'] = $delivery_charge;
             $data['total_amount'] = $delivery_charge+$vat_amount+$product_total;
-            $data['settings']['cash_on_delivery'] = (!empty($is_payment_mode) && $is_payment_mode->cash_on_delivery == 1)? true : false;
-            $data['settings']['card_payment'] = (!empty($is_payment_mode) && $is_payment_mode->card_payment == 1)? true : false;
+            $data['payment_type']['cash_on_delivery']['status'] = (!empty($is_payment_mode) && $is_payment_mode->cash_on_delivery == 1)? true : false;
+            $data['payment_type']['cash_on_delivery']['code'] = 1;
+            $data['payment_type']['card_payment']['status'] = (!empty($is_payment_mode) && $is_payment_mode->card_payment == 1)? true : false;
+            $data['payment_type']['card_payment']['code'] = 2;
             return $data;
         } else {
             $data = null;

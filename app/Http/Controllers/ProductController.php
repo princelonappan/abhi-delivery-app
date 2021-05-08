@@ -30,8 +30,6 @@ class ProductController extends Controller
 
         if(!empty(request('is_featured'))) {
             $products = $products->where('is_featured', 1);
-        } else {
-            $products = $products->where('is_featured', '!=', 1);
         }
 
         $products = $products->get();
