@@ -17,7 +17,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::where('customer_id', request('customer_id'))->get();
+        $orders = Order::where('customer_id', request('customer_id'))->orderBy('created_at', 'desc')->get();
         return $orders->load('items');
     }
 
