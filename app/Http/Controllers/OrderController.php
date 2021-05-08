@@ -36,7 +36,7 @@ class OrderController extends Controller
             'customer_id' => $cart->customer_id,
             'order_total' => request('order_total'),
             'product_total' => request('product_total'),
-            'delivery_charge' => $delivery_charge->amount,
+            'delivery_charge' => request('delivery_charge'),
             'delivery_charge_percentage' => $delivery_charge->amount,
             'delivery_charge_min_amount' => $delivery_charge->min_amount,
             'vat' => request('vat'),
