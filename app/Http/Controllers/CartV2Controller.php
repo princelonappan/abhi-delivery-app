@@ -81,7 +81,8 @@ class CartV2Controller extends Controller
             foreach($data['cart']->items as $item) {
                 $product_total+=$item->price;
             }
-            $vat_amount = (!empty($vat_persantage) && !empty($product_total)) ? $product_total/$vat_persantage : 0;
+            // $vat_amount = (!empty($vat_persantage) && !empty($product_total)) ? $product_total/$vat_persantage : 0;
+            $vat_amount = (!empty($vat_persantage) && !empty($product_total)) ? ($vat_persantage/$product_total)*100 : 0;
             $delivery = $vat = Settings::where('slug', 'delivery_charge')->first();
             $delivery_charge = 0;
 
@@ -134,11 +135,11 @@ class CartV2Controller extends Controller
             foreach($data['cart']->items as $item) {
                 $product_total+=$item->price;
             }
-            $vat_amount = (!empty($vat_persantage) && !empty($product_total)) ? $product_total/$vat_persantage : 0;
+            $vat_amount = (!empty($vat_persantage) && !empty($product_total)) ? ($vat_persantage/$product_total)*100 : 0;
             $delivery = $vat = Settings::where('slug', 'delivery_charge')->first();
             $delivery_charge = 0;
 
-            $delivery_charge = !empty($delivery) ? (($delivery->min_amount > $product_total) ? $delivery->min_amount : 0)  : 0;
+            $delivery_charge = !empty($delivery) ? (($delivery->min_amount > $product_total) ? $delivery->delivery_charge : 0)  : 0;
             $is_payment_mode = Settings::where('slug', 'payment_mode')->first();
 
             $data['product_total'] = $product_total;
