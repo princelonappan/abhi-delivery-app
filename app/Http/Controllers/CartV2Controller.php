@@ -86,7 +86,7 @@ class CartV2Controller extends Controller
             $delivery = $vat = Settings::where('slug', 'delivery_charge')->first();
             $delivery_charge = 0;
 
-            $delivery_charge = !empty($delivery) ? (($delivery->min_amount > $product_total) ? $delivery->min_amount : 0)  : 0;
+            $delivery_charge = !empty($delivery) ? (($delivery->amount > $product_total) ? $delivery->amount : 0)  : 0;
             $is_payment_mode = Settings::where('slug', 'payment_mode')->first();
 
             $data['product_total'] = $product_total;
