@@ -86,6 +86,12 @@ class CustomerController extends Controller
         $customer->date_of_birth = !empty($request->date_of_birth) ? $request->date_of_birth : $customer->date_of_birth;
         $customer->save();
 
+        $user = User::where('userable_id', $id)->where('userable_type', 'customer')->first();
+        if(!empty($user)) {
+            $user->name = $request->name;
+            $user->save();
+        }
+
         $customer = Customer::with(['user'])->where('id', $id)->first();
         $data = [];
         $data['id'] = $customer->id;
