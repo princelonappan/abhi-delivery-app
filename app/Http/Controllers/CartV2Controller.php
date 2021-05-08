@@ -62,7 +62,7 @@ class CartV2Controller extends Controller
         if($request->has('product_id')) {
             $cart_item = CartItem::where('cart_id', $cart->id)->where('product_id', request('product_id'))->first();
             if(!empty($cart_item)) {
-                $cart_item->qty = $cart_item->qty+1;
+                $cart_item->qty = $cart_item->qty+request('qty');
                 $cart_item->price = $cart_item->qty*request('price');
                 $cart_item->save();
 
