@@ -51,5 +51,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('payments', 'PaymentController@index');
+Route::get('payments-response', 'PaymentController@store');
+Route::get('payments-status', 'PaymentController@status');
+Route::get('payments-cancel', 'PaymentController@update');
+
 
 

@@ -6,6 +6,7 @@ use App\Order;
 use App\Cart;
 use App\Address;
 use App\Settings;
+use App\PaymentTransaction;
 use App\Http\Requests\OrderRequest;
 
 class OrderController extends Controller
@@ -29,6 +30,13 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request)
     {
+        if(!empty(request('payment_type')) && request('payment_type') == 2) {
+            if(!empty(request('transaction_id'))) {
+                $responseArray['message'] = 'Invalid Transactions';
+                $responseArray['success'] = false;
+                return response()->json($responseArray, 500);
+            }
+        }
         $cart = Cart::find(request('cart_id'))->load('items');
         $val = Settings::where('slug', 'vat')->first();
         $delivery_charge = Settings::where('slug', 'delivery_charge')->first();
@@ -46,6 +54,16 @@ class OrderController extends Controller
         $order->createOrderItems($cart);
         $order->address()->create($request->except(['cart_id', 'order_total']));
         $cart->update(['status' => 'Checked Out']);
+
+        if(request('payment_type') == 2 && !empty(request('transaction_id'))) {
+            $transcation = PaymentTransaction::where('payment_transaction_id', request('transaction_id'))->first();
+            $transcation->order_id = $order->id;
+            $transcation->save();
+        } else {
+            $responseArray['message'] = 'Invalid Transactions';
+            $responseArray['success'] = false;
+            return response()->json($responseArray, 500);
+        }
 
         return $order->load('items');
     }
