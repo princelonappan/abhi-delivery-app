@@ -7,6 +7,7 @@ use App\Cart;
 use App\CartItem;
 use App\Settings;
 use App\PaymentTransaction;
+use App\Address;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -18,7 +19,11 @@ class PaymentController extends Controller
      */
     public function index(Request $request)
     {
-        $cart = Cart::where('id', $request->cart_id)->with(['customer.user', 'items', 'items.product',  'items.product.category', 'items.product.images'])->first();
+        $cart = Cart::where('id', $request->cart_id)->with(['customer.user', 'items', 'items.product',  'items.product.category', 'items.product.images'])->where('status', 'Active')->first();
+        $address = Address::where('id', $request->address_id)->where('id', $request->address_id)->first();
+        if(empty($address)) {
+            return 'Invalid Address';
+        }
         if(!empty($cart)) {
 
             $vat = Settings::where('slug', 'vat')->first();
@@ -52,11 +57,11 @@ class PaymentController extends Controller
                 'Customer' => [
                     'FirstName' => !empty($cart->customer) ? $cart->customer->name : '',
                     'LastName' => '',
-                    'Street1' => 'Level 5',
-                    'Street2' => '369 Queen Street',
-                    'City' => 'Sydney',
-                    'State' => 'NSW',
-                    'PostalCode' => '2000',
+                    'Street1' => $address->address,
+                    'Street2' => $address->address2,
+                    'City' => $address->city,
+                    'State' => $address->state,
+                    'PostalCode' => $address->zip,
                     'Country' => 'au',
                     'Email' => !empty($cart->customer) && !empty($cart->customer->user) ? $cart->customer->user->email : '',
                 ],
@@ -83,6 +88,8 @@ class PaymentController extends Controller
             }
 
             return redirect($sharedURL);
+        } else {
+            die('Invalid Cart');
         }
 
     }
