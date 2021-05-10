@@ -30,7 +30,7 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request)
     {
-        if(!empty(request('payment_type')) && request('payment_type') == 2) {
+        if(empty(request('payment_type')) && request('payment_type') == 2) {
             if(!empty(request('transaction_id'))) {
                 $responseArray['message'] = 'Invalid Transactions';
                 $responseArray['success'] = false;
