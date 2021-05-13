@@ -306,6 +306,14 @@ return [
             // 'label_color' => 'success',
         ],
 
+        [
+            'text'        => 'Manage invoice',
+            'url'         => '#',
+            'icon'        => 'fa fa-university',
+            // 'label'       => 4,
+            // 'label_color' => 'success',
+        ],
+
         // ['header' => 'account_settings'],
         // [
         //     'text' => 'profile',

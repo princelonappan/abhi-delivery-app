@@ -29,12 +29,17 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
+        $status = $request->status;
         if ($request->wantsJson) {
             $orders = Order::all();
             return $orders;
         } else {
-            $orders = Order::orderBy('id', 'desc')->paginate(10);
-            return view('admin.order.list-order')->with('orders', $orders);
+            $orders = Order::orderBy('id', 'desc');
+            if(!empty($status)) {
+                $orders = $orders->where('status', $status);
+            }
+            $orders = $orders->paginate(10);
+            return view('admin.order.list-order')->with(['orders' => $orders, 'status' => $status]);
         }
     }
 
@@ -57,7 +62,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-  
+
     }
 
     /**

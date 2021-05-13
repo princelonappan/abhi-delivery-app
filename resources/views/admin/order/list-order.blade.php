@@ -26,6 +26,17 @@
 </div>
 <div class="card">
 <div class="card-header">
+        <div class="col-md-4 pull-right">
+            <form action="">
+                <select class="form-control" name="status" id="status" onchange="this.form.submit()">
+                    <option value="">Choose Status</option>
+                    <option {{ !empty($status) && $status == 'Confirmed' ? 'selected' : '' }} value="Confirmed">Confirmed</option>
+                    <option {{ !empty($status) && $status == 'Out for delivery' ? 'selected' : '' }} value="Out for delivery">Out for delivery</option>
+                    <option {{ !empty($status) && $status == 'Delivered' ? 'selected' : '' }} value="Delivered">Delivered</option>
+                    <option {{ !empty($status) && $status == 'Canceled' ? 'selected' : '' }} value="Canceled">Canceled</option>
+                </select>
+            </form>
+        </div>
         <div class="card-tools">
             {{ $orders->links() }}
         </div>

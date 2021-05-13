@@ -30,17 +30,27 @@
             <a style="margin: 19px;" href="{{ route('admin.palet-inventory.download-sample-csv')}}" class="btn btn-primary">Download Sample CSV file </a>
 
             <div style="float:right;">
-            <form enctype='multipart/form-data' action="{{ route('admin.palet-inventory.store') }}" method='POST'>
-            @csrf    
-            <label>Upload Product CSV file Here</label>
-                <input size='50' type='file' name='csv_import'>
-                </br>
-                <input type='submit' class="btn btn-primary" name='submit' value='Upload CSV'>
-            </form>
-        </div>
-        <div class="card-tools">
-            {{ $palet_inventory->links() }}
-        </div>
+                <form enctype='multipart/form-data' action="{{ route('admin.palet-inventory.store') }}" method='POST'>
+                @csrf
+                <label>Upload Product CSV file Here</label>
+                    <input size='50' type='file' name='csv_import'>
+                    </br>
+                    <input type='submit' class="btn btn-primary" name='submit' value='Upload CSV'>
+                </form>
+            </div>
+            <div class="col-md-4 pull-right">
+                <form action="">
+                    <select class="form-control" name="godown_unique_id" id="godown_unique_id" onchange="this.form.submit()">
+                        <option value="">Choose Godown</option>
+                        @foreach($godowns as $godown)
+                        <option {{ !empty($godown_unique_id) && $godown_unique_id ==  $godown->godown_unique_id ? 'selected' : '' }} value="{{ $godown->godown_unique_id }}">{{ $godown->name }}</option>
+                        @endforeach
+                    </select>
+                </form>
+            </div>
+            <div class="card-tools">
+                {{ $palet_inventory->links() }}
+            </div>
     </div>
     <!-- /.card-header -->
     <div class="card-body p-0">
@@ -60,6 +70,7 @@
                 @php
                 $i = 1
                 @endphp
+                @if(!$palet_inventory->isEmpty())
                 @foreach ($palet_inventory as $_palet)
                 <tr>
                     <td>{{ $i }}</td>
@@ -82,6 +93,11 @@
                 $i++;
                 @endphp
                 @endforeach
+                @else
+                <tr>
+                    <td colspan="8">No record found</td>
+                </tr>
+                @endif
             </tbody>
         </table>
     </div>

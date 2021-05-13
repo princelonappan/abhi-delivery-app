@@ -30,12 +30,21 @@ class PaletInventoryController extends Controller
      */
     public function index(Request $request)
     {
+        $godown_unique_id = $request->godown_unique_id;
+        $godowns = Godown::where('status', 1)->get();
+        $palet_inventory = PaletInventory::orderBy('created_at', 'desc');
         if ($request->wantsJson) {
-            $palet_inventory = PaletInventory::all();
+            if(!empty($godown_unique_id)) {
+                $palet_inventory = $palet_inventory->where('godown_id', $godown_unique_id);
+            }
+            $palet_inventory = $palet_inventory->get();
             return $palet_inventory;
         } else {
-            $palet_inventory = PaletInventory::paginate(10);
-            return view('admin.palet_inventory.list-palet_inventory')->with('palet_inventory', $palet_inventory);
+            if(!empty($godown_unique_id)) {
+                $palet_inventory = $palet_inventory->where('godown_id', $godown_unique_id);
+            }
+            $palet_inventory = $palet_inventory->paginate(10);;
+            return view('admin.palet_inventory.list-palet_inventory')->with(['palet_inventory' => $palet_inventory, 'godowns' => $godowns, 'godown_unique_id' => $godown_unique_id]);
         }
     }
 
