@@ -60,9 +60,12 @@ class OrderController extends Controller
             $transcation->order_id = $order->id;
             $transcation->save();
         } else {
-            $responseArray['message'] = 'Invalid Transactions';
-            $responseArray['success'] = false;
-            return response()->json($responseArray, 500);
+            if(request('payment_type') != 1) {
+                $responseArray['message'] = 'Invalid Transactions';
+                $responseArray['success'] = false;
+                return response()->json($responseArray, 500);
+            }
+
         }
 
         return $order->load('items');
