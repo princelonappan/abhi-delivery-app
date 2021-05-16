@@ -76,7 +76,7 @@ class OrderController extends Controller
         }
         $user = User::where('userable_id', $cart->customer_id)->where('userable_type', 'customer')->first();
         $order = Order::find($order->id);
-        $mail = $this->sendNotification($order,$user);
+        // $mail = $this->sendNotification($order,$user);
 
         return $order->load('items');
     }
