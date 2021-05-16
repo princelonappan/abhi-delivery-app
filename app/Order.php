@@ -8,7 +8,7 @@ use App\Address;
 
 class Order extends Model
 {
-	protected $fillable = ['customer_id', 'status', 'order_total', 'product_total', 'delivery_charge', 'delivery_charge_percentage', 'delivery_charge_min_amount', 'vat', 'vat_percentage', 'payment_type'];
+	protected $fillable = ['customer_id', 'order_id', 'status', 'order_total', 'product_total', 'delivery_charge', 'delivery_charge_percentage', 'delivery_charge_min_amount', 'vat', 'vat_percentage', 'payment_type'];
 
     public function customer()
     {

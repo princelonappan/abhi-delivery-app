@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Order;
 use App\Cart;
 use App\Address;
+use App\Customer;
 use App\Settings;
+use App\User;
 use App\PaymentTransaction;
 use App\Http\Requests\OrderRequest;
-
+use App\Notifications\OrderNotification;
+use Illuminate\Notifications\Notification;
 class OrderController extends Controller
 {
     /**
@@ -30,6 +33,8 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request)
     {
+        $latestOrder = !empty(Order::orderBy('created_at','DESC')->first()) ? Order::orderBy('created_at','DESC')->first()->id : 0;
+        $order_nr = 'ORD'.str_pad($latestOrder + 1, 8, "0", STR_PAD_LEFT);
         if(empty(request('payment_type')) && request('payment_type') == 2) {
             if(!empty(request('transaction_id'))) {
                 $responseArray['message'] = 'Invalid Transactions';
@@ -49,7 +54,8 @@ class OrderController extends Controller
             'delivery_charge_min_amount' => $delivery_charge->min_amount,
             'vat' => request('vat'),
             'vat_percentage' => !empty($val) ? $val->amount : 0,
-            'payment_type' => request('payment_type')
+            'payment_type' => request('payment_type'),
+            'order_id' => $order_nr
         ]);
         $order->createOrderItems($cart);
         $order->address()->create($request->except(['cart_id', 'order_total']));
@@ -67,8 +73,24 @@ class OrderController extends Controller
             }
 
         }
+        $user = User::where('userable_id', $cart->customer_id)->where('userable_type', 'customer')->first();
+        $order = Order::find($order->id);
+        $mail = $this->sendNotification($order,$user);
 
         return $order->load('items');
+    }
+
+    public function sendNotification($order,$user) {
+        $customer = Customer::where('id', $user->userable_id)->first();
+        $details = [
+            'greeting' => 'Hi '.$customer->name,
+            'body' => 'Your order hasbeen completed',
+            'thanks' => 'Thank you for using ItSolutionStuff.com tuto!',
+            'actionText' => 'View My Site',
+            'actionURL' => url('/'),
+            'order_id' => $order->id
+        ];
+        Notification::send($user, new OrderNotification($details));
     }
 
     /**
