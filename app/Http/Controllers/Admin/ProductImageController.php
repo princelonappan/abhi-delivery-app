@@ -30,7 +30,6 @@ class ProductImageController extends Controller
      */
     public function index($product_id, Request $request)
     {
-        dd(1);
         if ($request->wantsJson) {
             $images = ProductImage::where('product_id', $product_id)->get();
             return $images;
