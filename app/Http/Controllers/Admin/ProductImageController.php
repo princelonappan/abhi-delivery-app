@@ -30,11 +30,12 @@ class ProductImageController extends Controller
      */
     public function index($product_id, Request $request)
     {
+        dd(1);
         if ($request->wantsJson) {
-            $images = ProductImage::all();
+            $images = ProductImage::where('product_id', $product_id)->get();
             return $images;
         } else {
-            $images = ProductImage::paginate(10);
+            $images = ProductImage::where('product_id', $product_id)->paginate(10);
 
             return view('admin.image.list-image', compact('images', 'product_id'));
         }
