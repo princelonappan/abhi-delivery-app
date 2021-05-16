@@ -109,9 +109,10 @@ class CustomerController extends Controller
     // Generate OTP
     public function generateOtp(CustomerRequest $request) {
         $otp_value = rand(1000,9999);
-        // $otp_value = 1234;
+
         if(empty($request->customer_id)) {
             $exist = Customer::where('phone_number', $request->phone_number)->where('status', 'Active')->first();
+            $sms = $this->sms($request->phone_number, $otp_value);
             if(!empty($exist)) {
                 $responseArray['message'] = 'Mobile Already exists';
                 $responseArray['success'] = false;
@@ -150,7 +151,7 @@ class CustomerController extends Controller
             $data['email'] = !empty($customer->user) ? $customer->user->email : "";
             $data['phone_number'] = $customer->phone_number;
             $data['status'] = $customer->status;
-            $data['otp'] = $otp_value;
+            // $data['otp'] = $otp_value;
             $data['date_of_birth'] = $customer->date_of_birth;
             $data['created_at'] = $customer->created_at;
             $data['updated_at'] = $customer->updated_at;
@@ -229,5 +230,31 @@ class CustomerController extends Controller
         $responseArray['success'] = false;
         return response()->json($responseArray, 500);
 
+    }
+
+    // SMS gateway
+    public function sms($mobile, $otp) {
+        $mobile = $mobile;
+        $api_key = env('SMS_API');
+        $api_url = env('SMS_URL');
+        $message = 'Your OTP is '.$otp;
+
+        // Build the URL to send the message to. Make sure the
+        // message text and Sender ID are URL encoded. You can
+        // use HTTP or HTTPS
+        $url =  ($api_url .'?apiKey=' . $api_key . '&to=' . $mobile . '&content=' . urlencode($message));
+        // Send the request
+        // create a new cURL resource
+        $ch = curl_init();
+
+        // set URL and other appropriate options
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+
+        // grab URL and pass it to the browser
+        curl_exec($ch);
+
+        // close cURL resource, and free up system resources
+        curl_close($ch);
     }
 }
