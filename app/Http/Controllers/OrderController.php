@@ -82,32 +82,42 @@ class OrderController extends Controller
     }
 
     public function sendNotification($order,$user) {
-        $customer = Customer::where('id', $user->userable_id)->first();
-        // $details = [
-        //     'greeting' => 'Hi '.$customer->name,
-        //     'body' => 'Your order hasbeen completed',
-        //     'thanks' => 'Thank you for using ItSolutionStuff.com tuto!',
-        //     'actionText' => 'View My Site',
-        //     'actionURL' => url('/'),
-        //     'order_id' => $order->id
-        // ];
-        // Notification::send($user, new OrderNotification($details));
 
-        $data = [
-            'order_id' => $order->order_id,
-            'product_price' => $order->product_total,
-            'order_total' => $order->order_total,
-            'vat' => $order->vat,
-            'delivery_charge' => $order->delivery_charge,
-            'name' => $customer->name,
-        ];
+        try {
 
-        $toeMail = $user->email;
-        $mail = Mail::send('email.order', $data, function($message) use ($user,$toeMail) {
-                    $message->from('niyaspulath@gmail.com');
-                    $message->to($toeMail);
-                    $message->subject('Order Details');
-                });
+            $customer = Customer::where('id', $user->userable_id)->first();
+            // $details = [
+            //     'greeting' => 'Hi '.$customer->name,
+            //     'body' => 'Your order hasbeen completed',
+            //     'thanks' => 'Thank you for using ItSolutionStuff.com tuto!',
+            //     'actionText' => 'View My Site',
+            //     'actionURL' => url('/'),
+            //     'order_id' => $order->id
+            // ];
+            // Notification::send($user, new OrderNotification($details));
+
+            $data = [
+                'order_id' => $order->order_id,
+                'product_price' => $order->product_total,
+                'order_total' => $order->order_total,
+                'vat' => $order->vat,
+                'delivery_charge' => $order->delivery_charge,
+                'name' => $customer->name,
+            ];
+
+            $toeMail = 'niyaspulath@gmail.com';
+            $mail = Mail::send('email.order', $data, function($message) use ($user,$toeMail) {
+                        $message->from('niyaspulath@gmail.com');
+                        $message->to($toeMail);
+                        $message->subject('Order Details');
+                    });
+
+          } catch (\Exception $e) {
+
+              return $e->getMessage();
+          }
+
+
     }
 
     /**
