@@ -76,7 +76,7 @@ class OrderController extends Controller
         }
         $user = User::where('userable_id', $cart->customer_id)->where('userable_type', 'customer')->first();
         $order = Order::find($order->id);
-        // $mail = $this->sendNotification($order,$user);
+        $mail = $this->sendNotification($order,$user);
 
         return $order->load('items');
     }
@@ -103,7 +103,7 @@ class OrderController extends Controller
         ];
 
         $toeMail = $user->email;
-        $mail = Mail::send('emails.order', $data, function($message) use ($user,$toeMail) {
+        $mail = Mail::send('email.order', $data, function($message) use ($user,$toeMail) {
                     $message->from('niyaspulath@gmail.com');
                     $message->to($toeMail);
                     $message->subject('Order Details');
