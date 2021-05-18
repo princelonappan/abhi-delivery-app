@@ -114,15 +114,15 @@ class PaymentController extends Controller
         // Query the transaction result.
 
 
-        $transaction = rand();
+        // $transaction = rand();
 
-        $payment_transaction = new PaymentTransaction();
-        $payment_transaction->payment_transaction_id = $transaction;
-        $payment_transaction->save();
+        // $payment_transaction = new PaymentTransaction();
+        // $payment_transaction->payment_transaction_id = $transaction;
+        // $payment_transaction->save();
 
-        return redirect('/payments-status?success=true&transaction_id='.$transaction);
+        // return redirect('/payments-status?success=true&transaction_id='.$transaction);
 
-        /*
+
         $response = $client->queryTransaction($_GET['AccessCode']);
         $transactionResponse = $response->Transactions[0];
         // Display the transaction result
@@ -139,7 +139,7 @@ class PaymentController extends Controller
                 echo "Payment failed: " .\Eway\Rapid::getMessage($error)."";
             }
             return redirect('/payments-status?success=false');
-        }*/
+        }
 
     }
 
