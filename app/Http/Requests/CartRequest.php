@@ -50,7 +50,7 @@ class CartRequest extends FormRequest
                     'qty' => 'required_with:product_id|numeric',
                     'price' => 'required_with:product_id|numeric',
                 ];
-                
+
             }
         }
 
@@ -63,6 +63,18 @@ class CartRequest extends FormRequest
             }
             $rules['qty'] = 'required_with:product_id|numeric';
             $rules['price'] = 'required_with:product_id|numeric';
+        }
+
+        if($this->verb == 'POST') {
+            if($this->endpoint == 'api/v1/distributor/cart') {
+                $rules = [
+                    'distributor_id' => 'required|exists:customers,id',
+                    'product_id' => 'exists:products,id',
+                    'qty' => 'required_with:product_id|numeric',
+                    'price' => 'required_with:product_id|numeric',
+                ];
+
+            }
         }
 
 
