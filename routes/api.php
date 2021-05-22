@@ -69,5 +69,14 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
 	Route::post('distributor/cart', 'Distributor\DistributorCartController@store');
 	Route::put('distributor/cart/{id}', 'Distributor\DistributorCartController@update');
 
+    Route::post('distributor/order', 'Distributor\DistributorOrderController@store');
+	Route::get('distributor/order', 'Distributor\DistributorOrderController@index');
+	Route::get('distributor/order/{id}', 'Distributor\DistributorOrderController@show');
+	Route::post('distributor/order-cancel', 'Distributor\DistributorOrderController@cancelOrder');
+
+
+    Route::get('distributor/product', 'Distributor\DistributorProductController@index');
+	Route::get('distributor/product/{id}', 'Distributor\DistributorProductController@show');
+
 
 });
