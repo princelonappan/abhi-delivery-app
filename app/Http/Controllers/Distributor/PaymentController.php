@@ -22,7 +22,7 @@ class PaymentController extends Controller
     public function index(Request $request)
     {
         $cart = DistributorCart::where('id', $request->cart_id)->with(['customer.user', 'items', 'items.product',  'items.product.category', 'items.product.images'])->where('status', 'Active')->first();
-        $address = Address::where('id', $request->address_id)->where('id', $request->address_id)->first();
+        $address = Address::where('id', $request->address_id)->first();
         if(empty($address)) {
             return 'Invalid Address';
         }

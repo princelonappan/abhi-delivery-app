@@ -27,6 +27,7 @@ class DistributorAddressController extends Controller
             $data[$key]['branch_name'] = $branch->branch_name;
             $data[$key]['distributor_id'] = $branch->distributor_id;
             $data[$key]['phone_number'] = $branch->phone_number;
+            $data[$key]['address_id'] = $branch_address->id;
             $data[$key]['addressable_type'] = $branch_address->addressable_type;
             $data[$key]['address_type'] = $branch_address->address_type;
             $data[$key]['address'] = $branch_address->address;
