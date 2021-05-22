@@ -56,5 +56,10 @@ Route::get('payments-response', 'PaymentController@store');
 Route::get('payments-status', 'PaymentController@status');
 Route::get('payments-cancel', 'PaymentController@update');
 
+Route::get('distributor/payments', 'Distributor\PaymentController@index');
+Route::get('distributor/payments-response', 'Distributor\DistributorPaymentController@store');
+Route::get('distributor/payments-status', 'Distributor\DistributorPaymentController@status');
+Route::get('distributor/payments-cancel', 'Distributor\DistributorPaymentController@update');
+
 
 

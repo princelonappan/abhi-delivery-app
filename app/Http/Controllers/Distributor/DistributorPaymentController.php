@@ -12,7 +12,7 @@ use App\DistributorPaymentTransaction;
 use App\Address;
 use Illuminate\Http\Request;
 
-class PaymentController extends Controller
+class DistributorPaymentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,7 +21,7 @@ class PaymentController extends Controller
      */
     public function index(Request $request)
     {
-        $cart = DistributorCart::where('id', $request->cart_id)->with(['customer.user', 'items', 'items.product',  'items.product.category', 'items.product.images'])->where('status', 'Active')->first();
+        $cart = DistributorCart::where('id', $request->cart_id)->with(['distributor.user', 'items', 'items.product',  'items.product.category', 'items.product.images'])->where('status', 'Active')->first();
         $address = Address::where('id', $request->address_id)->first();
         if(empty($address)) {
             return 'Invalid Address';
