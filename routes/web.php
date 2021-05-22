@@ -41,6 +41,8 @@ Route::prefix('admin')->group(function() {
     Route::resource('payment-mode', 'Admin\PaymentModeController', ['names' => 'admin.payment_mode']);
 
     Route::get('dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
+
+    Route::resource('distributor-order', 'Admin\DistributorOrderController', ['names' => 'admin.distributor_order']);
  });
 
 Route::get('/', function () {

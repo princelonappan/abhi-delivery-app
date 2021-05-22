@@ -78,7 +78,8 @@
                         </label>
                     </td>
                     <td>
-                        <a href="{{ route('admin.distributor.branch.index',$_distributor->id)}}" class="btn btn-danger" style="background-color:green; border-color:green;">Manage Branches </a>
+                        <a href="{{ route('admin.distributor.branch.index',$_distributor->id)}}" class="btn btn-danger" style="background-color:green; border-color:green;">Manage Branches </a> &nbsp;
+                        <a href="{{ route('admin.distributor_order.index')}}?distributor_id={{ $_distributor->id }}" class="btn btn-danger" style="background-color:green; border-color:green;">Orders </a>
                     </td>
                 </tr>
                 @php
