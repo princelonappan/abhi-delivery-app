@@ -56,5 +56,7 @@ Route::get('payments-response', 'PaymentController@store');
 Route::get('payments-status', 'PaymentController@status');
 Route::get('payments-cancel', 'PaymentController@update');
 
+Route::get('mail/send', 'MailController@send');
+
 
 
