@@ -78,5 +78,10 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
     Route::get('distributor/product', 'Distributor\DistributorProductController@index');
 	Route::get('distributor/product/{id}', 'Distributor\DistributorProductController@show');
 
+    //Category and Product API
+	Route::get('distributor/category', 'Distributor\DistributorCategoryController@index');
+
+    Route::get('distributor/branches', 'Distributor\DistributorAddressController@index');
+
 
 });
