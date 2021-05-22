@@ -14,6 +14,22 @@ class Distributor extends Model
 
     public function user()
     {
-    	return $this->morphOne('App\User', 'userable');		
+    	return $this->morphOne('App\User', 'userable');
     }
+
+    public function carts()
+    {
+    	return $this->hasMany('App\DistributorCart');
+    }
+
+    public function orders()
+    {
+    	return $this->hasMany('App\Order');
+    }
+
+    public function addresses()
+    {
+    	return $this->morphMany('App\Address', 'addressable');
+    }
+
 }

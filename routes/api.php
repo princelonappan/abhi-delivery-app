@@ -63,5 +63,11 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
 
     Route::get('home', 'HomePageController@index');
 
+    //Distributor Cart API
+	Route::get('distributor/cart', 'Distributor\DistributorCartController@index');
+	Route::get('distributor/cart/{id}', 'Distributor\DistributorCartController@show');
+	Route::post('distributor/cart', 'Distributor\DistributorCartController@store');
+	Route::put('distributor/cart/{id}', 'Distributor\DistributorCartController@update');
+
 
 });
