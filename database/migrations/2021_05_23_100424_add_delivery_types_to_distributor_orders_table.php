@@ -26,7 +26,7 @@ class AddDeliveryTypesToDistributorOrdersTable extends Migration
     public function down()
     {
         Schema::table('distributor_orders', function (Blueprint $table) {
-            //
+            $table->dropColumn('delivery_type');
         });
     }
 }

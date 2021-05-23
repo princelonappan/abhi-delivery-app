@@ -60,6 +60,16 @@ class PaletRequest extends FormRequest
                 ];
 
             }
+
+            if($this->endpoint == 'api/v1/distributor/palet-complete') {
+                $rules = [
+                    'product_id' => 'required',
+                    'order_id' => 'required|numeric'
+                ];
+
+            }
+
+
         }
 
         return $rules;

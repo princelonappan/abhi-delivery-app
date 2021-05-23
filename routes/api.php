@@ -90,6 +90,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
 	Route::post('distributor/palet', 'Distributor\PaletController@store');
 	Route::put('distributor/palet/{id}', 'Distributor\PaletController@update');
     Route::post('distributor/palet-delete', 'Distributor\PaletController@destroy');
+    Route::post('distributor/palet-complete', 'Distributor\PaletController@completePalet');
 
 
 

@@ -8,6 +8,10 @@ class DistributorOrderItem extends Model
 {
     protected $fillable = ['distributor_order_id', 'product_id', 'qty', 'price'];
 
+    protected $casts = [
+        'is_palet_full' => 'boolean',
+    ];
+
     public function order()
     {
     	return $this->belongsTo('App\DistributorOrder');

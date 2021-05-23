@@ -6,4 +6,9 @@ return [
         2 => 'Pickup from Godown'
     ],
 
+    'is_palet_full' => [
+        1 => false,
+        2 => true,
+    ]
+
 ];

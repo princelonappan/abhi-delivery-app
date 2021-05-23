@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PaletRequest;
 use App\PaletInventory;
 use App\DistributorOrder;
+use App\DistributorOrderItem;
 use App\Product;
 use App\Favourite;
+use GuzzleHttp\Psr7\Request;
 
 class PaletController extends Controller
 {
@@ -175,5 +177,20 @@ class PaletController extends Controller
 
         }
 
+    }
+
+    public function completePalet(PaletRequest $request) {
+        $item = DistributorOrderItem::where('distributor_order_id', $request->order_id)->where('product_id', $request->product_id)->first();
+        if(!empty($item)) {
+            $item->is_palet_full = true;
+            $item->save();
+            return DistributorOrder::findOrFail($item->distributor_order_id)->load('items', 'items.product', 'items.product.images');
+        } else {
+            $responseArray = [];
+            $responseArray['success'] = false;
+            $responseArray['message'] = 'Invalid Palet ID.';
+            return response()->json($responseArray, 400);
+
+        }
     }
 }

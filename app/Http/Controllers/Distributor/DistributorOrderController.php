@@ -14,7 +14,6 @@ use App\User;
 use App\PaymentTransaction;
 use App\Http\Requests\DistributorOrderRequest;
 use App\Notifications\OrderNotification;
-use App\PaletInventory;
 use Illuminate\Notifications\Notification;
 
 class DistributorOrderController extends Controller
@@ -202,9 +201,7 @@ class DistributorOrderController extends Controller
     public function show($id)
     {
         $data = DistributorOrder::findOrFail($id)->load('items', 'items.product', 'items.product.images');
-        $count_order_products = $data->items->count();
-        // $palet_order = PaletInventory::where('distributor_order_id', $id)->where('')
-        // $delivery_type = config('genaral.delivery_type');
+        $delivery_type = config('genaral.delivery_type');
         return $data;
     }
 
