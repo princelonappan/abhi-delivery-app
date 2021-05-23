@@ -82,7 +82,7 @@
                                     <option value="Canceled" {{ $order->status == 'Canceled' ? 'selected' : ''}}>Canceled</option>
                                     @else
                                     <option value="Confirmed" {{ $order->status == 'Confirmed' ? 'selected' : ''}}>Confirmed</option>
-                                    <option value="Out for delivery" {{ $order->status == 'Collected' ? 'selected' : ''}}>Collected</option>
+                                    <option value="Collected" {{ $order->status == 'Collected' ? 'selected' : ''}}>Collected</option>
                                     <option value="Canceled" {{ $order->status == 'Canceled' ? 'selected' : ''}}>Canceled</option>
                                     @endif
                                 </select> &nbsp;&nbsp;
