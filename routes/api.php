@@ -84,6 +84,12 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
     Route::get('distributor/branches', 'Distributor\DistributorAddressController@index');
     Route::get('distributor/delivery-types', 'Distributor\DistributorAddressController@orderTypes');
 
+    // Route::resource('favourites', 'Distributor\PaletController@index');
+	Route::get('distributor/palet', 'Distributor\PaletController@index');
+    Route::get('distributor/palet/{id}', 'Distributor\PaletController@show');
+	Route::post('distributor/palet', 'Distributor\PaletController@store');
+	Route::put('distributor/palet/{id}', 'Distributor\PaletController@update');
+    Route::post('distributor/palet-delete', 'Distributor\PaletController@destroy');
 
 
 

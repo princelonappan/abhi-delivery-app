@@ -74,11 +74,17 @@
                             <form id="quickForm" action="{{ route('admin.distributor_order.update', $order->id) }}" novalidate="novalidate" method="POST">
                                 @csrf
                                 @method('PUT')
-                                <select name="status">
+                                <select name="status" style="min-width: 150px">
+                                    @if($order->delivery_type == 1)
                                     <option value="Confirmed" {{ $order->status == 'Confirmed' ? 'selected' : ''}}>Confirmed</option>
                                     <option value="Out for delivery" {{ $order->status == 'Out for delivery' ? 'selected' : ''}}>Out for delivery</option>
                                     <option value="Delivered" {{ $order->status == 'Delivered' ? 'selected' : ''}}>Delivered</option>
                                     <option value="Canceled" {{ $order->status == 'Canceled' ? 'selected' : ''}}>Canceled</option>
+                                    @else
+                                    <option value="Confirmed" {{ $order->status == 'Confirmed' ? 'selected' : ''}}>Confirmed</option>
+                                    <option value="Out for delivery" {{ $order->status == 'Collected' ? 'selected' : ''}}>Collected</option>
+                                    <option value="Canceled" {{ $order->status == 'Canceled' ? 'selected' : ''}}>Canceled</option>
+                                    @endif
                                 </select> &nbsp;&nbsp;
                                 <input type="hidden" name="distributor_id" value="{{ $order->distributor_id }}">
                                 <button type="submit" class="btn btn-primary">Update Status</button>
