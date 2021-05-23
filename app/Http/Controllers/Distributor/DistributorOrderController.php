@@ -42,7 +42,7 @@ class DistributorOrderController extends Controller
             $data[$key]["delivery_charge_percentage"] =  $order->delivery_charge_percentage;
             $data[$key]["delivery_charge_min_amount"] =  $order->delivery_charge_min_amount;
             $data[$key]["payment_type"] =  $order->payment_type;
-            $data[$key]["delivery_type"] = $delivery_type[$order->delivery_type];
+            $data[$key]["delivery_type"] = $order->delivery_type;
             $data[$key]["created_at"] =  $order->created_at;
             $data[$key]["updated_at"] =  $order->updated_at;
             $data[$key]["items"] = $order->items;
@@ -60,9 +60,18 @@ class DistributorOrderController extends Controller
      */
     public function store(DistributorOrderRequest $request)
     {
+
         $latestOrder = !empty(DistributorOrder::orderBy('created_at','DESC')->first()) ? DistributorOrder::orderBy('created_at','DESC')->first()->id : 0;
         $order_nr = 'ORD'.str_pad($latestOrder + 1, 8, "0", STR_PAD_LEFT);
         if(empty(request('payment_type')) && request('payment_type') == 2) {
+            if(!empty(request('transaction_id'))) {
+                $responseArray['message'] = 'Invalid Transactions';
+                $responseArray['success'] = false;
+                return response()->json($responseArray, 500);
+            }
+        }
+
+        if(empty(request('delivery_type')) && request('delivery_type') == 1) {
             if(!empty(request('transaction_id'))) {
                 $responseArray['message'] = 'Invalid Transactions';
                 $responseArray['success'] = false;
@@ -86,8 +95,41 @@ class DistributorOrderController extends Controller
             'delivery_type' => request('delivery_type'),
             'order_no' => $order_nr
         ]);
+
         $order->createOrderItems($cart);
-        $order->address()->create($request->except(['cart_id', 'palet_order_total']));
+        if(!empty(request('delivery_type')) && request('delivery_type') == 1) {
+
+            $responseArray = [];
+
+            $responseArray['success'] = false;
+            if(empty(request('address'))) {
+                $responseArray['message'] = 'The address field is required.';
+                return response()->json($responseArray, 400);
+            }
+
+            if(empty(request('address_type'))) {
+                $responseArray['message'] = 'The address type field is required.';
+                return response()->json($responseArray, 400);
+            }
+            if(empty(request('city'))) {
+                $responseArray['message'] = 'The city field is required.';
+                return response()->json($responseArray, 400);
+            }
+            if(empty(request('state'))) {
+                $responseArray['message'] = 'The state field is required.';
+                return response()->json($responseArray, 400);
+            }
+            if(empty(request('zip'))) {
+                $responseArray['message'] = 'The zip field is required.';
+                return response()->json($responseArray, 400);
+            }
+            if(empty(request('country'))) {
+                $responseArray['message'] = 'The country field is required.';
+                return response()->json($responseArray, 400);
+            }
+
+            $order->address()->create($request->except(['cart_id', 'palet_order_total']));
+        }
         $cart->update(['status' => 'Checked Out']);
 
         if(request('payment_type') == 2 && !empty(request('transaction_id'))) {
@@ -107,7 +149,7 @@ class DistributorOrderController extends Controller
         $order = DistributorOrder::find($order->id);
         $mail = $this->sendNotification($order,$user);
         $delivery_type = config('genaral.delivery_type');
-        $order->delivery_type = $delivery_type[$order->delivery_type];
+        // $order->delivery_type = $delivery_type[$order->delivery_type];
         return $order->load('items');
     }
 
@@ -160,7 +202,7 @@ class DistributorOrderController extends Controller
     {
         $data = DistributorOrder::findOrFail($id)->load('items', 'items.product', 'items.product.images');
         $delivery_type = config('genaral.delivery_type');
-        $data->delivery_type = $delivery_type[$data->delivery_type];
+        // $data->delivery_type = $delivery_type[$data->delivery_type];
         return $data;
     }
 
@@ -177,7 +219,7 @@ class DistributorOrderController extends Controller
             $order->save();
             $order = DistributorOrder::findOrFail($request->id)->load('items', 'items.product', 'items.product.images');
             $delivery_type = config('genaral.delivery_type');
-            $order->delivery_type = $delivery_type[$order->delivery_type];
+            // $order->delivery_type = $delivery_type[$order->delivery_type];
             return $order;
         }
         $responseArray['message'] = 'Something went wrong';
