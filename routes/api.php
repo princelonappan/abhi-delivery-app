@@ -82,6 +82,9 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
 	Route::get('distributor/category', 'Distributor\DistributorCategoryController@index');
 
     Route::get('distributor/branches', 'Distributor\DistributorAddressController@index');
+    Route::get('distributor/delivery-types', 'Distributor\DistributorAddressController@orderTypes');
+
+
 
 
 });

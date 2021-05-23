@@ -25,8 +25,31 @@ class DistributorOrderController extends Controller
      */
     public function index()
     {
+        $delivery_type = config('genaral.delivery_type');
         $orders = DistributorOrder::where('distributor_id', request('distributor_id'))->orderBy('created_at', 'desc')->get();
-        return $orders->load('items');
+        $data = [];
+        foreach($orders as $key => $order) {
+
+            $data[$key]["id"] = $order->id;
+            $data[$key]["order_no"] = $order->order_no;
+            $data[$key]["distributor_id"] = $order->distributor_id;
+            $data[$key]["status"] = $order->status;
+            $data[$key]["palet_order_total"] = $order->palet_order_total;
+            $data[$key]["product_total"] =  $order->product_total;
+            $data[$key]["vat"] =  $order->vat;
+            $data[$key]["vat_percentage"] =  $order->vat_percentage;
+            $data[$key]["delivery_charge"] =  $order->delivery_charge;
+            $data[$key]["delivery_charge_percentage"] =  $order->delivery_charge_percentage;
+            $data[$key]["delivery_charge_min_amount"] =  $order->delivery_charge_min_amount;
+            $data[$key]["payment_type"] =  $order->payment_type;
+            $data[$key]["delivery_type"] = $delivery_type[$order->delivery_type];
+            $data[$key]["created_at"] =  $order->created_at;
+            $data[$key]["updated_at"] =  $order->updated_at;
+            $data[$key]["items"] = $order->items;
+
+        }
+        // return $orders->load('items');
+        return $data;
     }
 
     /**
@@ -82,7 +105,8 @@ class DistributorOrderController extends Controller
         $user = User::where('userable_id', $cart->distributor_id)->where('userable_type', 'distributor')->first();
         $order = DistributorOrder::find($order->id);
         $mail = $this->sendNotification($order,$user);
-
+        $delivery_type = config('genaral.delivery_type');
+        $order->delivery_type = $delivery_type[$order->delivery_type];
         return $order->load('items');
     }
 
@@ -133,7 +157,10 @@ class DistributorOrderController extends Controller
      */
     public function show($id)
     {
-        return DistributorOrder::findOrFail($id)->load('items', 'items.product', 'items.product.images');
+        $data = DistributorOrder::findOrFail($id)->load('items', 'items.product', 'items.product.images');
+        $delivery_type = config('genaral.delivery_type');
+        $data->delivery_type = $delivery_type[$data->delivery_type];
+        return $data;
     }
 
     /**
@@ -147,7 +174,10 @@ class DistributorOrderController extends Controller
         if(!empty($order)) {
             $order->status = "Canceled";
             $order->save();
-            return DistributorOrder::findOrFail($request->id)->load('items', 'items.product', 'items.product.images');
+            $order = DistributorOrder::findOrFail($request->id)->load('items', 'items.product', 'items.product.images');
+            $delivery_type = config('genaral.delivery_type');
+            $order->delivery_type = $delivery_type[$order->delivery_type];
+            return $order;
         }
         $responseArray['message'] = 'Something went wrong';
         $responseArray['success'] = false;

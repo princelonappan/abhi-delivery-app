@@ -47,7 +47,7 @@ class DistributorOrderRequest extends FormRequest
             if($this->endpoint == 'api/v1/distributor/order-cancel') {
                 $rules = [
                     'id' => 'required',
-                    'customer_id' => 'required'
+                    'distributor_id' => 'required'
                 ];
 
             } else {
@@ -68,7 +68,8 @@ class DistributorOrderRequest extends FormRequest
                     'product_total' => 'required',
                     'delivery_charge' => 'required',
                     'vat' => 'required',
-                    'payment_type' => 'required'
+                    'payment_type' => 'required',
+                    'delivery_type' => 'required|integer'
                 ];
             }
 
