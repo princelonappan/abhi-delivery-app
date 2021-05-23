@@ -203,7 +203,7 @@ class DistributorOrderController extends Controller
     {
         $data = DistributorOrder::findOrFail($id)->load('items', 'items.product', 'items.product.images');
         $count_order_products = $data->items->count();
-        $palet_order = PaletInventory::where('distributor_order_id', $id)->where('')
+        // $palet_order = PaletInventory::where('distributor_order_id', $id)->where('')
         // $delivery_type = config('genaral.delivery_type');
         return $data;
     }
