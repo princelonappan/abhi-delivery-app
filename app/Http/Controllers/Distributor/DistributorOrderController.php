@@ -83,6 +83,7 @@ class DistributorOrderController extends Controller
             'vat' => request('vat'),
             'vat_percentage' => !empty($val) ? $val->amount : 0,
             'payment_type' => request('payment_type'),
+            'delivery_type' => request('delivery_type'),
             'order_no' => $order_nr
         ]);
         $order->createOrderItems($cart);

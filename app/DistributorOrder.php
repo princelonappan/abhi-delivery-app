@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DistributorOrder extends Model
 {
-    protected $fillable = ['distributor_id', 'order_no', 'status', 'palet_order_total', 'product_total', 'delivery_charge', 'delivery_charge_percentage', 'delivery_charge_min_amount', 'vat', 'vat_percentage', 'payment_type'];
+    protected $fillable = ['distributor_id', 'order_no', 'status', 'palet_order_total', 'product_total', 'delivery_charge', 'delivery_charge_percentage', 'delivery_charge_min_amount', 'vat', 'vat_percentage', 'payment_type', 'delivery_type'];
 
     public function distributor()
     {
