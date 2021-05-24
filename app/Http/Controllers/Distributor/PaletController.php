@@ -184,7 +184,11 @@ class PaletController extends Controller
         if(!empty($item)) {
             $item->is_palet_full = true;
             $item->save();
-            return DistributorOrder::findOrFail($item->distributor_order_id)->load('items', 'items.product', 'items.product.images');
+
+            $order = DistributorOrder::findOrFail($item->distributor_order_id);
+            $order->status = 'Collected';
+            $order->save();
+            return $order->load('items', 'items.product', 'items.product.images');
         } else {
             $responseArray = [];
             $responseArray['success'] = false;
