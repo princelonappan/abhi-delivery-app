@@ -207,14 +207,8 @@ class PaletController extends Controller
                 $product =  Product::with(['category', 'items', 'images'])->where('status', 1)->where('id', $palet->product_id)->first();
                 $data[$key] = $product;
             }
-            return $data;
-        } else {
-            $responseArray = [];
-            $responseArray['success'] = false;
-            $responseArray['message'] = 'Invalid Palet.';
-            return response()->json($responseArray, 400);
-
         }
+        return $data;
     }
 
 }
