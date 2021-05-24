@@ -117,7 +117,7 @@ class PaletController extends Controller
         } else {
             $responseArray = [];
             $responseArray['success'] = false;
-            $responseArray['message'] = 'Invalid Palet ID.';
+            $responseArray['message'] = 'Invalid Palet.';
             return response()->json($responseArray, 400);
 
         }
@@ -172,7 +172,7 @@ class PaletController extends Controller
         } else {
             $responseArray = [];
             $responseArray['success'] = false;
-            $responseArray['message'] = 'Invalid Palet ID.';
+            $responseArray['message'] = 'Invalid Palet.';
             return response()->json($responseArray, 400);
 
         }
@@ -188,9 +188,29 @@ class PaletController extends Controller
         } else {
             $responseArray = [];
             $responseArray['success'] = false;
-            $responseArray['message'] = 'Invalid Palet ID.';
+            $responseArray['message'] = 'Invalid Palet.';
             return response()->json($responseArray, 400);
 
         }
     }
+
+
+    public function paletLists(PaletRequest $request) {
+        $palets = PaletInventory::where('product_id', $request->product_id)->where('distributor_order_id', $request->order_id)->get();
+        $data = [];
+        if(!$palets->isEmpty()) {
+            foreach($palets as $key => $palet) {
+                $product =  Product::with(['category', 'items', 'images'])->where('status', 1)->where('id', $palet->product_id)->first();
+                $data[$key] = $product;
+            }
+            return $data;
+        } else {
+            $responseArray = [];
+            $responseArray['success'] = false;
+            $responseArray['message'] = 'Invalid Palet.';
+            return response()->json($responseArray, 400);
+
+        }
+    }
+
 }

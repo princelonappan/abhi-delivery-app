@@ -91,6 +91,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['api.response.formatter']], fun
 	Route::put('distributor/palet/{id}', 'Distributor\PaletController@update');
     Route::post('distributor/palet-delete', 'Distributor\PaletController@destroy');
     Route::post('distributor/palet-complete', 'Distributor\PaletController@completePalet');
+    Route::post('distributor/palet-lists', 'Distributor\PaletController@paletLists');
 
 
 
