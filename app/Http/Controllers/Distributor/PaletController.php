@@ -68,6 +68,7 @@ class PaletController extends Controller
                         $data['is_favourite'] = true;
                         $data['created_at'] = $product->created_at;
                         $data['updated_at'] = $product->updated_at;
+                        $data['palet_id'] = $palet->palet_id;
                         $data['category'] = $product->category;
                         $data['items'] = $product->items;
                         $data['images'] = $product->images;
@@ -84,6 +85,7 @@ class PaletController extends Controller
                         $data['is_favourite'] = false;
                         $data['created_at'] = $product->created_at;
                         $data['updated_at'] = $product->updated_at;
+                        $data['palet_id'] = $palet->palet_id;
                         $data['category'] = $product->category;
                         $data['items'] = $product->items;
                         $data['images'] = $product->images;
@@ -101,6 +103,7 @@ class PaletController extends Controller
                     $data['is_favourite'] = false;
                     $data['created_at'] = $product->created_at;
                     $data['updated_at'] = $product->updated_at;
+                    $data['palet_id'] = $palet->palet_id;
                     $data['category'] = $product->category;
                     $data['items'] = $product->items;
                     $data['images'] = $product->images;
@@ -205,6 +208,7 @@ class PaletController extends Controller
         if(!$palets->isEmpty()) {
             foreach($palets as $key => $palet) {
                 $product =  Product::with(['category', 'items', 'images'])->where('status', 1)->where('id', $palet->product_id)->first();
+                $product->palet_id = $palet->palet_id;
                 $data[$key] = $product;
             }
         }
